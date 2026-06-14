@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anvil — Where Code Gets Forged, Hammered, and Tested Until It Holds</title>
+<meta name="description" content="Anvil is a self-verified coding agent that plans, executes, verifies, and recovers — stopping only when tests pass. Built on 210K+ agent traces across 21 projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --bg-card: #141414;
+  --border: #262626;
+  --border-hover: #404040;
+  --text-primary: #fafafa;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #666666;
+  --accent: #f59e0b;
+  --accent-hover: #d97706;
+  --accent-glow: rgba(245, 158, 11, 0.15);
+  --accent-dim: rgba(245, 158, 11, 0.08);
+  --success: #22c55e;
+  --error: #ef4444;
+  --warning: #eab308;
+  --info: #3b82f6;
+  --code-bg: #0d0d0d;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-accent: 0 0 40px rgba(245, 158, 11, 0.1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--accent-hover); }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── NAVBAR ─── */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.navbar-brand .brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #000;
+  font-weight: 900;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.navbar-links a {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navbar-links a:hover { color: var(--text-primary); }
+
+.navbar-cta {
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.navbar-cta:hover {
+  background: var(--accent-hover);
+  color: #000;
+  transform: translateY(-1px);
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 140%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, var(--accent-dim) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(245,158,11,0.03) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.hero .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content { max-width: 600px; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-badge i { font-size: 0.7rem; }
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+.hero h1 .accent { color: var(--accent); }
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 30px rgba(245,158,11,0.2);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(245,158,11,0.3);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+  transform: translateY(-2px);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.hero-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* ─── CODE VERIFICATION VISUAL ─── */
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.code-forge-animation {
+  width: 100%;
+  max-width: 520px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow), var(--shadow-accent);
+}
+
+.forge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.forge-dot { width: 10px; height: 10px; border-radius: 50%; }
+.forge-dot.red { background: #ef4444; }
+.forge-dot.yellow { background: #eab308; }
+.forge-dot.green { background: #22c55e; }
+
+.forge-title {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.forge-body {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  min-height: 280px;
+}
+
+.forge-line {
+  opacity: 0;
+  animation: fadeInLine 0.4s forwards;
+}
+
+.forge-line .line-num {
+  color: var(--text-tertiary);
+  display: inline-block;
+  width: 30px;
+  user-select: none;
+}
+
+.forge-line .keyword { color: #c084fc; }
+.forge-line .func { color: #60a5fa; }
+.forge-line .string { color: #34d399; }
+.forge-line .comment { color: #525252; font-style: italic; }
+.forge-line .error-line { color: var(--error); }
+.forge-line .success-line { color: var(--success); }
+.forge-line .accent-line { color: var(--accent); }
+
+.forge-line:nth-child(1) { animation-delay: 0s; }
+.forge-line:nth-child(2) { animation-delay: 1.2s; }
+.forge-line:nth-child(3) { animation-delay: 2.4s; }
+.forge-line:nth-child(4) { animation-delay: 3.6s; }
+.forge-line:nth-child(5) { animation-delay: 5s; }
+.forge-line:nth-child(6) { animation-delay: 6.2s; }
+.forge-line:nth-child(7) { animation-delay: 7.4s; }
+.forge-line:nth-child(8) { animation-delay: 8.6s; }
+.forge-line:nth-child(9) { animation-delay: 9.8s; }
+.forge-line:nth-child(10) { animation-delay: 11s; }
+
+@keyframes fadeInLine {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.forge-status {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.forge-status.checking { color: var(--warning); }
+.forge-status.passed { color: var(--success); }
+.forge-status.fixing { color: var(--error); }
+
+.status-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.forge-loop-label {
+  position: absolute;
+  bottom: 56px;
+  right: 16px;
+  background: var(--accent);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  animation: pulseBadge 2s ease-in-out infinite;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ─── HOW IT WORKS ─── */
+.section {
+  padding: 120px 0;
+  position: relative;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  position: relative;
+}
+
+.how-it-works-grid::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  right: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent) 25%, var(--border) 25%, var(--border) 50%, var(--accent) 50%, var(--accent) 75%, var(--border) 75%);
+  background-size: 40px 2px;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.step-card {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.step-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-accent);
+  transform: translateY(-4px);
+}
+
+.step-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-weight: 800;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.step-icon {
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.step-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.step-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.how-it-works-callout {
+  margin-top: 48px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.how-it-works-callout i {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.how-it-works-callout p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.how-it-works-callout strong { color: var(--accent); }
+
+/* ─── LIVE DEMO ─── */
+.live-demo {
+  background: var(--bg-secondary);
+}
+
+.terminal-mock {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(20,20,20,0.9);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+.terminal-header .dot.red { background: #ef4444; }
+.terminal-header .dot.yellow { background: #eab308; }
+.terminal-header .dot.green { background: #22c55e; }
+
+.terminal-header .title {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.terminal-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-tertiary);
+}
+
+.terminal-tab {
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.terminal-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.terminal-tab:hover {
+  color: var(--text-secondary);
+}
+
+.terminal-body {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.9;
+  min-height: 320px;
+  overflow-y: auto;
+}
+
+.terminal-body .prompt { color: var(--accent); }
+.terminal-body .cmd { color: var(--text-primary); }
+.terminal-body .output { color: var(--text-secondary); }
+.terminal-body .success { color: var(--success); }
+.terminal-body .error { color: var(--error); }
+.terminal-body .warning { color: var(--warning); }
+.terminal-body .dim { color: var(--text-tertiary); }
+
+.typing-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ─── ECOSYSTEM ─── */
+.ecosystem {
+  background: var(--bg-primary);
+}
+
+.ecosystem-categories {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.eco-filter-btn {
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.eco-filter-btn:hover,
+.eco-filter-btn.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.eco-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.eco-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.eco-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-accent);
+}
+
+.eco-card:hover::before { transform: scaleX(1); }
+
+.eco-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.eco-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.eco-card-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.eco-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.eco-card-install {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--code-bg);
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+
+.eco-card-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.tag-core { background: rgba(245,158,11,0.15); color: var(--accent); }
+.tag-models { background: rgba(96,165,250,0.15); color: #60a5fa; }
+.tag-data { background: rgba(52,211,153,0.15); color: #34d399; }
+.tag-infra { background: rgba(168,85,247,0.15); color: #a855f7; }
+
+/* ─── MODELS ─── */
+.models {
+  background: var(--bg-secondary);
+}
+
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.model-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.model-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.model-card-badge {
+  position: absolute;
+  top: -12px;
+  right: 24px;
+  background: var(--success);
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.model-card h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.model-card .model-size {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.model-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.model-spec {
+  display: flex;
+  flex-direction: column;
+}
+
+.model-spec-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.model-spec-value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.model-arch {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.model-arch svg { width: 100%; height: auto; }
+
+.model-card .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ─── QUICK START ─── */
+.quick-start {
+  background: var(--bg-primary);
+}
+
+.code-tabs {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.code-tab-headers {
+  display: flex;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-tab-header {
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.code-tab-header.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.code-tab-content {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.9;
+}
+
+.code-tab-content .prompt { color: var(--accent); }
+.code-tab-content .cmd { color: var(--text-primary); }
+.code-tab-content .flag { color: #60a5fa; }
+.code-tab-content .string { color: #34d399; }
+.code-tab-content .comment { color: var(--text-tertiary); font-style: italic; }
+
+/* ─── BENCHMARKS ─── */
+.benchmarks {
+  background: var(--bg-secondary);
+}
+
+.benchmarks-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.benchmark-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.benchmark-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.benchmark-table tbody td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.benchmark-table tbody tr:hover {
+  background: var(--accent-dim);
+}
+
+.benchmark-table .best {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.comparison-chart {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+
+.comparison-chart h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.chart-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chart-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chart-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.chart-bar-label span:first-child { color: var(--text-secondary); }
+.chart-bar-label span:last-child { font-weight: 700; }
+
+.chart-bar {
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.chart-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 1s ease-out;
+}
+
+.chart-bar-fill.accent { background: var(--accent); }
+.chart-bar-fill.dim { background: var(--text-tertiary); }
+
+/* ─── COMMUNITY ─── */
+.community {
+  background: var(--bg-primary);
+}
+
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.community-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.community-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-accent);
+}
+
+.community-card i {
+  font-size: 2.5rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.community-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.community-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.community-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 100px;
+  padding: 12px 24px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.community-badge i { font-size: 1rem; }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 0 32px;
+  background: var(--bg-secondary);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.footer-brand .brand-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #000;
+  font-weight: 900;
+}
+
+.footer-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.footer-col h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-col a {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--text-primary); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 968px) {
+  .hero .container { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .hero h1 { font-size: 2.5rem; }
+  .how-it-works-grid { grid-template-columns: repeat(2, 1fr); }
+  .ecosystem-grid { grid-template-columns: repeat(2, 1fr); }
+  .models-grid { grid-template-columns: 1fr; }
+  .benchmarks-content { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2rem; }
+  .hero-stats { flex-direction: column; gap: 16px; }
+  .hero-actions { flex-direction: column; }
+  .how-it-works-grid { grid-template-columns: 1fr; }
+  .how-it-works-grid::before { display: none; }
+  .ecosystem-grid { grid-template-columns: 1fr; }
+  .community-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .navbar-links { display: none; }
+  .section-title { font-size: 2rem; }
+}
+
+/* ─── SCROLL ANIMATIONS ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── MOBILE NAV ─── */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .mobile-menu-btn { display: block; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAVBAR ═══════ -->
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="navbar-brand">
+      <span class="brand-icon"><i class="fas fa-hammer"></i></span>
+      Anvil
+    </a>
+    <ul class="navbar-links">
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#models">Models</a></li>
+      <li><a href="#benchmarks">Benchmarks</a></li>
+      <li><a href="#community">Community</a></li>
+    </ul>
+    <a href="#quick-start" class="navbar-cta">Get Started</a>
+    <button class="mobile-menu-btn" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-bolt"></i> Self-Verified Coding Agent
+      </div>
+      <h1>
+        Where Code Gets <span class="accent">Forged</span>, Hammered, and Tested Until It Holds
+      </h1>
+      <p class="hero-subtitle">
+        Anvil doesn't just write code — it plans, executes, <strong>verifies</strong>, and <strong>recovers</strong>. 
+        Built on 210K+ agent traces across 21 projects. Stops only when tests pass.
+      </p>
+      <div class="hero-actions">
+        <a href="#quick-start" class="btn btn-primary">
+          <i class="fas fa-rocket"></i> Get Started
+        </a>
+        <a href="https://github.com/fableforge" class="btn btn-secondary" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i> View on GitHub
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-value">278+</span>
+          <span class="hero-stat-label">Tests</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">21</span>
+          <span class="hero-stat-label">Projects</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">6</span>
+          <span class="hero-stat-label">Model Backends</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">210K+</span>
+          <span class="hero-stat-label">Training Examples</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="code-forge-animation">
+        <div class="forge-header">
+          <span class="forge-dot red"></span>
+          <span class="forge-dot yellow"></span>
+          <span class="forge-dot green"></span>
+          <span class="forge-title">anvil — verify-loop</span>
+        </div>
+        <div class="forge-body">
+          <div class="forge-line"><span class="line-num"> 1</span><span class="keyword">def</span> <span class="func">resolve_imports</span>(tree):</div>
+          <div class="forge-line"><span class="line-num"> 2</span>    <span class="comment"># Plan: find all undefined names</span></div>
+          <div class="forge-line"><span class="line-num"> 3</span>    unresolved = <span class="func">collect_undefined</span>(tree)</div>
+          <div class="forge-line"><span class="line-num"> 4</span>    <span class="keyword">for</span> name <span class="keyword">in</span> unresolved:</div>
+          <div class="forge-line"><span class="line-num"> 5</span>        tree = <span class="func">infer_and_inject</span>(tree, name)</div>
+          <div class="forge-line"><span class="line-num"> 6</span>    <span class="error-line">✗ 3 tests failed — AssertionError</span></div>
+          <div class="forge-line"><span class="line-num"> 7</span><span class="accent-line">⟳ Recovering: fixing import order...</span></div>
+          <div class="forge-line"><span class="line-num"> 8</span>    tree = <span class="func">reorder_imports</span>(tree)</div>
+          <div class="forge-line"><span class="line-num"> 9</span>    <span class="success-line">✓ 5/5 tests passed</span></div>
+          <div class="forge-line"><span class="line-num">10</span>    <span class="success-line">✓ Verification complete</span></div>
+        </div>
+        <div class="forge-status passed" id="forge-status">
+          <div class="status-spinner"></div>
+          <span id="forge-status-text">Verify loop complete — all tests pass</span>
+        </div>
+        <div class="forge-loop-label">VERIFY → RECOVER → VERIFY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ HOW IT WORKS ═══════ -->
+<section id="how-it-works" class="section">
+  <div class="container">
+    <span class="section-label"><i class="fas fa-cogs"></i> How It Works</span>
+    <h2 class="section-title">The Forge Doesn't Stop Until It Holds</h2>
+    <p class="section-desc">
+      Most coding agents write code and hand it to you. Anvil runs a continuous 
+      <strong>Plan → Execute → Verify → Recover</strong> loop — iterating until every test passes.
+    </p>
+    <div class="how-it-works-grid">
+      <div class="step-card reveal">
+        <div class="step-number">1</div>
+        <div class="step-icon"><i class="fas fa-brain"></i></div>
+        <h3>Plan</h3>
+        <p>Analyze the task, decompose into steps, identify dependencies and constraints before writing a single line.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">2</div>
+        <div class="step-icon"><i class="fas fa-code"></i></div>
+        <h3>Execute</h3>
+        <p>Generate code with full context awareness — understanding project structure, conventions, and test expectations.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">3</div>
+        <div class="step-icon"><i class="fas fa-flask"></i></div>
+        <h3>Verify</h3>
+        <p>Run the test suite. If tests fail, the loop doesn't stop — every failure is a signal, not a dead end.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-number">4</div>
+        <div class="step-icon"><i class="fas fa-wrench"></i></div>
+        <h3>Recover</h3>
+        <p>Parse errors, diagnose root causes, and apply targeted fixes. Then re-verify. Repeat until green.</p>
+      </div>
+    </div>
+    <div class="how-it-works-callout reveal">
+      <i class="fas fa-hammer"></i>
+      <p>
+        Unlike other agents, <strong>Anvil doesn't just write code</strong> — it verifies it, recovers from errors, 
+        and <strong>only stops when tests pass</strong>. This is the forge: heat, hammer, quench, test. Repeat.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ LIVE DEMO ═══════ -->
+<section id="demo" class="section live-demo">
+  <div class="container">
+    <span class="section-label"><i class="fas fa-terminal"></i> Live Demo</span>
+    <h2 class="section-title">See Anvil in Action</h2>
+    <p class="section-desc">
+      Watch the verification loop run end-to-end. Anvil writes code, runs tests, 
+      catches failures, and fixes them — all without human intervention.
+    </p>
+    <div class="terminal-mock reveal">
+      <div class="terminal-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="title">anvil-demo — bash</span>
+      </div>
+      <div class="terminal-tabs">
+        <button class="terminal-tab active" data-tab="0">Fix a Bug</button>
+        <button class="terminal-tab" data-tab="1">Add a Feature</button>
+        <button class="terminal-tab" data-tab="2">Refactor Code</button>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div class="tab-content" id="tab-0">
+          <div><span class="prompt">$</span> <span class="cmd">anvil run</span> <span class="string">"Fix the off-by-one error in users.py"</span></div>
+          <div class="dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+          <div><span class="accent">⊕ Planning</span>  Analyzing users.py for off-by-one...</div>
+          <div><span class="accent">⊕ Execute</span>   Fixing range(1, n+1) → range(0, n) at line 47</div>
+          <div><span class="warning">⊕ Verify</span>    Running pytest...</div>
+          <div class="error">  FAIL test_users.py::test_pagination — AssertionError: expected 10, got 9</div>
+          <div><span class="error">✗ Recover</span>   Root cause: boundary condition in page slicing</div>
+          <div><span class="accent">⊕ Execute</span>   Adjusting slice logic: items[page*size:(page+1)*size]</div>
+          <div><span class="warning">⊕ Verify</span>    Running pytest...</div>
+          <div class="success">  PASS test_users.py::test_pagination</div>
+          <div class="success">  PASS test_users.py::test_user_creation</div>
+          <div class="success">  PASS test_users.py::test_delete_user</div>
+          <div><span class="success">✓ All 3 tests pass</span> — verification complete<span class="typing-cursor"></span></div>
+        </div>
+        <div class="tab-content" id="tab-1" style="display:none;">
+          <div><span class="prompt">$</span> <span class="cmd">anvil run</span> <span class="string">"Add rate-limiting to the API endpoints"</span></div>
+          <div class="dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+          <div><span class="accent">⊕ Planning</span>  Analyzing API structure and middleware...</div>
+          <div><span class="accent">⊕ Execute</span>   Creating rate_limiter.py with sliding window algorithm</div>
+          <div><span class="accent">⊕ Execute</span>   Adding decorator to 4 endpoints in api.py</div>
+          <div><span class="warning">⊕ Verify</span>    Running pytest...</div>
+          <div class="error">  FAIL test_api.py::test_rate_limit — TimeoutError: request was not blocked</div>
+          <div><span class="error">✗ Recover</span>   Fix: window size was 60000ms, needed 1000ms for test env</div>
+          <div><span class="accent">⊕ Execute</span>   Injecting TEST_RATE_LIMIT=100 env flag</div>
+          <div><span class="warning">⊕ Verify</span>    Running pytest...</div>
+          <div class="success">  PASS test_api.py::test_rate_limit</div>
+          <div class="success">  PASS test_api.py::test_bypass_limit</div>
+          <div class="success">  PASS test_api.py::test_unauthorized</div>
+          <div><span class="success">✓ All 3 tests pass</span> — feature added<span class="typing-cursor"></span></div>
+        </div>
+        <div class="tab-content" id="tab-2" style="display:none;">
+          <div><span class="prompt">$</span> <span class="cmd">anvil run</span> <span class="string">"Refactor database layer to use async/await"</span></div>
+          <div class="dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+          <div><span class="accent">⊕ Planning</span>  Mapping sync DB calls across 12 files...</div>
+          <div><span class="accent">⊕ Execute</span>   Converting db.py: fetch_one → afetch, execute → aexecute</div>
+          <div><span class="accent">⊕ Execute</span>   Updating 8 query functions to async</div>
+          <div><span class="warning">⊕ Verify</span>    Running pytest...</div>
+          <div class="error">  FAIL test_db.py::test_connection — RuntimeError: no current event loop</div>
+          <div><span class="error">✗ Recover</span>   Adding asyncio.run() wrapper in test setup fixture</div>
+          <div><span class="accent">⊕ Execute</span>   Creating event_loop fixture in conftest.py</div>
+          <div><span class="warning">⊕ Verify</span>    Running pytest...</div>
+          <div class="success">  PASS test_db.py::test_connection</div>
+          <div class="success">  PASS test_db.py::test_query_async</div>
+          <div class="success">  PASS test_db.py::test_transaction_rollback</div>
+          <div><span class="success">✓ All 3 tests pass</span> — refactor complete<span class="typing-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ ECOSYSTEM ═══════ -->
+<section id="ecosystem" class="section">
+  <div class="container">
+    <span class="section-label"><i class="fas fa-project-diagram"></i> Ecosystem</span>
+    <h2 class="section-title">21 Projects, One Forge</h2>
+    <p class="section-desc">
+      A complete ecosystem for building, training, and deploying self-verified coding agents — 
+      from the core loop to specialized models to production infrastructure.
+    </p>
+    <div class="ecosystem-categories reveal">
+      <button class="eco-filter-btn active" data-filter="all">All</button>
+      <button class="eco-filter-btn" data-filter="core">Core</button>
+      <button class="eco-filter-btn" data-filter="models">Models</button>
+      <button class="eco-filter-btn" data-filter="data">Data</button>
+      <button class="eco-filter-btn" data-filter="infra">Infra</button>
+    </div>
+    <div class="ecosystem-grid reveal" id="eco-grid">
+      <div class="eco-card" data-category="core">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-hammer"></i></div>
+          <h3>Anvil</h3>
+          <span class="eco-card-tag tag-core">Core</span>
+        </div>
+        <p class="eco-card-desc">The self-verified coding agent. Plans, executes, verifies, recovers — until tests pass.</p>
+        <div class="eco-card-install">pip install anvil-agent</div>
+      </div>
+      <div class="eco-card" data-category="core">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-loop"></i></div>
+          <h3>VerifyLoop</h3>
+          <span class="eco-card-tag tag-core">Core</span>
+        </div>
+        <p class="eco-card-desc">The verification loop engine. Runs tests, parses failures, feeds signals back to recovery.</p>
+        <div class="eco-card-install">pip install verifyloop</div>
+      </div>
+      <div class="eco-card" data-category="core">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-shield-halved"></i></div>
+          <h3>ErrorRecovery</h3>
+          <span class="eco-card-tag tag-core">Core</span>
+        </div>
+        <p class="eco-card-desc">Structured error diagnosis and targeted fix generation from test failure signals.</p>
+        <div class="eco-card-install">pip install errorrecovery</div>
+      </div>
+      <div class="eco-card" data-category="core">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-sitemap"></i></div>
+          <h3>AgentSwarm</h3>
+          <span class="eco-card-tag tag-core">Core</span>
+        </div>
+        <p class="eco-card-desc">Multi-agent orchestration for parallel task execution with shared context.</p>
+        <div class="eco-card-install">pip install agentswarm</div>
+      </div>
+      <div class="eco-card" data-category="models">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-fire"></i></div>
+          <h3>FableForge-14B</h3>
+          <span class="eco-card-tag tag-models">Model</span>
+        </div>
+        <p class="eco-card-desc">14B parameter coding model fine-tuned on verified agent traces. Full code understanding.</p>
+        <div class="eco-card-install">pip install fableforge-14b</div>
+      </div>
+      <div class="eco-card" data-category="models">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-terminal"></i></div>
+          <h3>ShellWhisperer-1.5B</h3>
+          <span class="eco-card-tag tag-models">Model</span>
+        </div>
+        <p class="eco-card-desc">Lightweight shell command model for terminal interaction and environment execution.</p>
+        <div class="eco-card-install">pip install shellwhisperer</div>
+      </div>
+      <div class="eco-card" data-category="models">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-brain"></i></div>
+          <h3>ReasonCritic-7B</h3>
+          <span class="eco-card-tag tag-models">Model</span>
+        </div>
+        <p class="eco-card-desc">Reasoning critic model for verifying logic, catching edge cases, and detecting hallucinations.</p>
+        <div class="eco-card-install">pip install reasoncritic</div>
+      </div>
+      <div class="eco-card" data-category="data">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-database"></i></div>
+          <h3>FableForge Dataset</h3>
+          <span class="eco-card-tag tag-data">Data</span>
+        </div>
+        <p class="eco-card-desc">210K+ verified agent traces across Python, JS, Rust, Go — the training fuel for Anvil models.</p>
+        <div class="eco-card-install">pip install fableforge-dataset</div>
+      </div>
+      <div class="eco-card" data-category="data">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-filter"></i></div>
+          <h3>TrajectoryDistiller</h3>
+          <span class="eco-card-tag tag-data">Data</span>
+        </div>
+        <p class="eco-card-desc">Filters, cleans, and distills raw agent traces into high-quality training examples.</p>
+        <div class="eco-card-install">pip install trajectory-distiller</div>
+      </div>
+      <div class="eco-card" data-category="data">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-code-compare"></i></div>
+          <h3>TraceCompiler</h3>
+          <span class="eco-card-tag tag-data">Data</span>
+        </div>
+        <p class="eco-card-desc">Compiles multi-step agent traces into structured, tokenized training data for fine-tuning.</p>
+        <div class="eco-card-install">pip install trace-compiler</div>
+      </div>
+      <div class="eco-card" data-category="infra">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-server"></i></div>
+          <h3>Anvil Runtime</h3>
+          <span class="eco-card-tag tag-infra">Infra</span>
+        </div>
+        <p class="eco-card-desc">Production runtime for deploying Anvil agents with sandboxed execution and monitoring.</p>
+        <div class="eco-card-install">pip install anvil-runtime</div>
+      </div>
+      <div class="eco-card" data-category="infra">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Telemetry</h3>
+          <span class="eco-card-tag tag-infra">Infra</span>
+        </div>
+        <p class="eco-card-desc">Observability for agent loops — trace every verify-recover cycle, token usage, and latency.</p>
+        <div class="eco-card-install">pip install anvil-telemetry</div>
+      </div>
+      <div class="eco-card" data-category="infra">
+        <div class="eco-card-header">
+          <div class="eco-card-icon"><i class="fas fa-benchmark"></i></div>
+          <h3>BenchAgent</h3>
+          <span class="eco-card-tag tag-infra">Infra</span>
+        </div>
+        <p class="eco-card-desc">Automated benchmarking framework for evaluating agent performance across coding tasks.</p>
+        <div class="eco-card-install">pip install benchagent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ MODELS ═══════ -->
+<section id="models" class="section">
+  <div class="container">
+    <span class="section-label"><i class="fas fa-microchip"></i> Models</span>
+    <h2 class="section-title">Forged for Verification</h2>
+    <p class="section-desc">
+      Three purpose-built models — each trained on verified agent traces, 
+      each designed to make the verification loop stronger.
+    </p>
+    <div class="models-grid reveal">
+      <div class="model-card">
+        <span class="model-card-badge">Train Free on Colab</span>
+        <h3>FableForge-14B</h3>
+        <div class="model-size">14B Parameters</div>
+        <div class="model-specs">
+          <div class="model-spec">
+            <span class="model-spec-label">Context Window</span>
+            <span class="model-spec-value">32K tokens</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-label">Training Data</span>
+            <span class="model-spec-value">210K+ traces</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-label">Architecture</span>
+            <span class="model-spec-value">Transformer</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-value">Code + Verify</span>
+            <span class="model-spec-label">Specialization</span>
+          </div>
+        </div>
+        <div class="model-arch">
+          <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="35" width="60" height="30" rx="4" stroke="var(--accent)" stroke-width="1.5" fill="var(--accent-dim)"/>
+            <text x="40" y="55" text-anchor="middle" fill="var(--accent)" font-size="10" font-family="var(--font-mono)">Input</text>
+            <line x1="70" y1="50" x2="100" y2="50" stroke="var(--accent)" stroke-width="1.5"/>
+            <rect x="100" y="20" width="80" height="60" rx="4" stroke="var(--accent)" stroke-width="1.5" fill="var(--accent-dim)"/>
+            <text x="140" y="48" text-anchor="middle" fill="var(--accent)" font-size="9" font-family="var(--font-mono)">24 Layers</text>
+            <text x="140" y="62" text-anchor="middle" fill="var(--text-secondary)" font-size="8" font-family="var(--font-mono)">+ Verify Head</text>
+            <line x1="180" y1="50" x2="210" y2="50" stroke="var(--accent)" stroke-width="1.5"/>
+            <rect x="210" y="35" width="60" height="30" rx="4" stroke="var(--success)" stroke-width="1.5" fill="rgba(34,197,94,0.08)"/>
+            <text x="240" y="55" text-anchor="middle" fill="var(--success)" font-size="10" font-family="var(--font-mono)">Output</text>
+          </svg>
+        </div>
+        <a href="https://github.com/fableforge" class="btn btn-primary">Get FableForge-14B</a>
+      </div>
+      <div class="model-card">
+        <span class="model-card-badge">Train Free on Colab</span>
+        <h3>ShellWhisperer-1.5B</h3>
+        <div class="model-size">1.5B Parameters</div>
+        <div class="model-specs">
+          <div class="model-spec">
+            <span class="model-spec-label">Context Window</span>
+            <span class="model-spec-value">8K tokens</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-label">Training Data</span>
+            <span class="model-spec-value">50K shell traces</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-label">Architecture</span>
+            <span class="model-spec-value">Transformer</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-value">Shell Commands</span>
+            <span class="model-spec-label">Specialization</span>
+          </div>
+        </div>
+        <div class="model-arch">
+          <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="35" width="50" height="30" rx="4" stroke="#60a5fa" stroke-width="1.5" fill="rgba(96,165,250,0.08)"/>
+            <text x="45" y="55" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="var(--font-mono)">Cmd</text>
+            <line x1="70" y1="50" x2="100" y2="50" stroke="#60a5fa" stroke-width="1.5"/>
+            <rect x="100" y="25" width="80" height="50" rx="4" stroke="#60a5fa" stroke-width="1.5" fill="rgba(96,165,250,0.08)"/>
+            <text x="140" y="48" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="var(--font-mono)">12 Layers</text>
+            <text x="140" y="62" text-anchor="middle" fill="var(--text-secondary)" font-size="8" font-family="var(--font-mono)">+ Shell Head</text>
+            <line x1="180" y1="50" x2="210" y2="50" stroke="#60a5fa" stroke-width="1.5"/>
+            <rect x="210" y="35" width="50" height="30" rx="4" stroke="var(--success)" stroke-width="1.5" fill="rgba(34,197,94,0.08)"/>
+            <text x="235" y="55" text-anchor="middle" fill="var(--success)" font-size="10" font-family="var(--font-mono)">Exec</text>
+          </svg>
+        </div>
+        <a href="https://github.com/fableforge" class="btn btn-secondary">Get ShellWhisperer</a>
+      </div>
+      <div class="model-card">
+        <span class="model-card-badge">Train Free on Colab</span>
+        <h3>ReasonCritic-7B</h3>
+        <div class="model-size">7B Parameters</div>
+        <div class="model-specs">
+          <div class="model-spec">
+            <span class="model-spec-label">Context Window</span>
+            <span class="model-spec-value">16K tokens</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-label">Training Data</span>
+            <span class="model-spec-value">80K critic traces</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-label">Architecture</span>
+            <span class="model-spec-value">Transformer</span>
+          </div>
+          <div class="model-spec">
+            <span class="model-spec-value">Reasoning</span>
+            <span class="model-spec-label">Specialization</span>
+          </div>
+        </div>
+        <div class="model-arch">
+          <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="50" height="30" rx="4" stroke="#a855f7" stroke-width="1.5" fill="rgba(168,85,247,0.08)"/>
+            <text x="35" y="30" text-anchor="middle" fill="#a855f7" font-size="9" font-family="var(--font-mono)">Code</text>
+            <rect x="10" y="60" width="50" height="30" rx="4" stroke="#a855f7" stroke-width="1.5" fill="rgba(168,85,247,0.08)"/>
+            <text x="35" y="80" text-anchor="middle" fill="#a855f7" font-size="9" font-family="var(--font-mono)">Output</text>
+            <line x1="60" y1="25" x2="100" y2="50" stroke="#a855f7" stroke-width="1.5"/>
+            <line x1="60" y1="75" x2="100" y2="50" stroke="#a855f7" stroke-width="1.5"/>
+            <rect x="100" y="30" width="80" height="40" rx="4" stroke="#a855f7" stroke-width="1.5" fill="rgba(168,85,247,0.08)"/>
+            <text x="140" y="48" text-anchor="middle" fill="#a855f7" font-size="9" font-family="var(--font-mono)">16 Layers</text>
+            <text x="140" y="62" text-anchor="middle" fill="var(--text-secondary)" font-size="8" font-family="var(--font-mono)">+ Critic Head</text>
+            <line x1="180" y1="50" x2="220" y2="50" stroke="#a855f7" stroke-width="1.5"/>
+            <rect x="220" y="35" width="50" height="30" rx="4" stroke="var(--success)" stroke-width="1.5" fill="rgba(34,197,94,0.08)"/>
+            <text x="245" y="55" text-anchor="middle" fill="var(--success)" font-size="9" font-family="var(--font-mono)">Pass/Fail</text>
+          </svg>
+        </div>
+        <a href="https://github.com/fableforge" class="btn btn-secondary">Get ReasonCritic</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ QUICK START ═══════ -->
+<section id="quick-start" class="section">
+  <div class="container">
+    <span class="section-label"><i class="fas fa-bolt"></i> Quick Start</span>
+    <h2 class="section-title">Start Forging in 30 Seconds</h2>
+    <p class="section-desc">
+      Install Anvil, run your first task, and watch the verification loop in action.
+    </p>
+    <div class="code-tabs reveal">
+      <div class="code-tab-headers">
+        <button class="code-tab-header active" data-qtab="0">Install</button>
+        <button class="code-tab-header" data-qtab="1">Run</button>
+        <button class="code-tab-header" data-qtab="2">Verify</button>
+      </div>
+      <div class="code-tab-content" id="qtab-0">
+        <div><span class="comment"># Install the Anvil agent</span></div>
+        <div><span class="prompt">$</span> <span class="cmd">pip install anvil-agent</span></div>
+        <div class="dim" style="margin-top:8px;"># Or install the full ecosystem</div>
+        <div><span class="prompt">$</span> <span class="cmd">pip install anvil-agent[all]</span></div>
+      </div>
+      <div class="code-tab-content" id="qtab-1" style="display:none;">
+        <div><span class="comment"># Run Anvil on a task</span></div>
+        <div><span class="prompt">$</span> <span class="cmd">anvil run</span> <span class="string">"Fix the failing tests in src/"</span></div>
+        <div class="dim" style="margin-top:8px;"># Or run as a daemon watching for changes</div>
+        <div><span class="prompt">$</span> <span class="cmd">anvil daemon</span> <span class="flag">--watch</span> <span class="string">src/</span></div>
+      </div>
+      <div class="code-tab-content" id="qtab-2" style="display:none;">
+        <div><span class="comment"># Verify results</span></div>
+        <div><span class="prompt">$</span> <span class="cmd">anvil verify</span> <span class="flag">--suite</span> <span class="string">all</span></div>
+        <div style="margin-top:4px;"><span class="success">✓ 12/12 tests passed</span></div>
+        <div><span class="success">✓ Verification complete — 0 errors remaining</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BENCHMARKS ═══════ -->
+<section id="benchmarks" class="section">
+  <div class="container">
+    <span class="section-label"><i class="fas fa-chart-bar"></i> Benchmarks</span>
+    <h2 class="section-title">Tested Worse, Deployed Better</h2>
+    <p class="section-desc">
+      Anvil with verification loops consistently outperforms agents without verification across every benchmark.
+    </p>
+    <div class="benchmarks-content reveal">
+      <div>
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Benchmark</th>
+              <th>Anvil (w/ Verify)</th>
+              <th>Without Verify</th>
+              <th>Δ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HumanEval</td>
+              <td class="best">89.2%</td>
+              <td>72.1%</td>
+              <td class="best">+17.1%</td>
+            </tr>
+            <tr>
+              <td>MBPP</td>
+              <td class="best">84.6%</td>
+              <td>68.3%</td>
+              <td class="best">+16.3%</td>
+            </tr>
+            <tr>
+              <td>SWE-Bench Lite</td>
+              <td class="best">31.4%</td>
+              <td>18.7%</td>
+              <td class="best">+12.7%</td>
+            </tr>
+            <tr>
+              <td>LiveCodeBench</td>
+              <td class="best">71.8%</td>
+              <td>55.2%</td>
+              <td class="best">+16.6%</td>
+            </tr>
+            <tr>
+              <td>MultiPL-E (avg)</td>
+              <td class="best">76.3%</td>
+              <td>61.9%</td>
+              <td class="best">+14.4%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="comparison-chart">
+        <h3>Verification Loop Impact</h3>
+        <div class="chart-bar-group">
+          <div class="chart-bar-item">
+            <div class="chart-bar-label">
+              <span>First-pass success rate</span>
+              <span>42%</span>
+            </div>
+            <div class="chart-bar">
+              <div class="chart-bar-fill dim" style="width: 42%;"></div>
+            </div>
+          </div>
+          <div class="chart-bar-item">
+            <div class="chart-bar-label">
+              <span>Success after verify-recover</span>
+              <span>89%</span>
+            </div>
+            <div class="chart-bar">
+              <div class="chart-bar-fill accent" style="width: 89%;"></div>
+            </div>
+          </div>
+          <div class="chart-bar-item">
+            <div class="chart-bar-label">
+              <span>Avg recovery iterations</span>
+              <span>2.3</span>
+            </div>
+            <div class="chart-bar">
+              <div class="chart-bar-fill accent" style="width: 46%;"></div>
+            </div>
+          </div>
+          <div class="chart-bar-item">
+            <div class="chart-bar-label">
+              <span>Time overhead per fix</span>
+              <span>8s avg</span>
+            </div>
+            <div class="chart-bar">
+              <div class="chart-bar-fill accent" style="width: 16%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ COMMUNITY ═══════ -->
+<section id="community" class="section">
+  <div class="container" style="text-align:center;">
+    <span class="section-label"><i class="fas fa-users"></i> Community</span>
+    <h2 class="section-title">Built in the Open, Forged by All</h2>
+    <p class="section-desc" style="margin-left:auto;margin-right:auto;">
+      Join the community shaping the future of self-verified coding agents. 
+      Every issue, PR, and trace makes Anvil stronger.
+    </p>
+    <div class="community-grid reveal">
+      <div class="community-card">
+        <i class="fab fa-github"></i>
+        <h3>GitHub</h3>
+        <p>Star, fork, and contribute to all 21 projects in the FableForge ecosystem.</p>
+        <a href="https://github.com/fableforge" class="btn btn-secondary" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i> View on GitHub
+        </a>
+      </div>
+      <div class="community-card">
+        <i class="fab fa-discord"></i>
+        <h3>Discord</h3>
+        <p>Get help, share traces, and discuss agent design with the community.</p>
+        <a href="https://discord.gg/fableforge" class="btn btn-secondary" target="_blank" rel="noopener">
+          <i class="fab fa-discord"></i> Join Discord
+        </a>
+      </div>
+      <div class="community-card">
+        <i class="fas fa-book"></i>
+        <h3>Docs</h3>
+        <p>Full API reference, tutorials, and guides for every project in the ecosystem.</p>
+        <a href="https://fableforge.dev/docs" class="btn btn-secondary" target="_blank" rel="noopener">
+          <i class="fas fa-book"></i> Read the Docs
+        </a>
+      </div>
+    </div>
+    <div class="community-badge reveal">
+      <i class="fas fa-fire"></i>
+      Built from 210K+ agent traces — and counting
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-icon"><i class="fas fa-hammer"></i></span>
+          Anvil
+        </div>
+        <p class="footer-desc">
+          Self-verified coding agents that plan, execute, verify, and recover — until tests pass. 
+          Built by FableForge.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Projects</h4>
+        <ul>
+          <li><a href="#">Anvil</a></li>
+          <li><a href="#">VerifyLoop</a></li>
+          <li><a href="#">ErrorRecovery</a></li>
+          <li><a href="#">FableForge-14B</a></li>
+          <li><a href="#">ShellWhisperer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Tutorials</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Discord</a></li>
+          <li><a href="#">Twitter/X</a></li>
+          <li><a href="#">Contributing</a></li>
+          <li><a href="#">Code of Conduct</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FableForge. MIT License.</span>
+      <span>Forged with 🔨 and tested until it held.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ─── Smooth scroll for anchor links ───
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ─── Scroll reveal ───
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // ─── Terminal tabs ───
+  const terminalTabs = document.querySelectorAll('.terminal-tab');
+  terminalTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      terminalTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const idx = tab.dataset.tab;
+      document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+      const active = document.getElementById('tab-' + idx);
+      if (active) active.style.display = 'block';
+    });
+  });
+
+  // ─── Quick start tabs ───
+  const codeTabHeaders = document.querySelectorAll('.code-tab-header');
+  codeTabHeaders.forEach(header => {
+    header.addEventListener('click', () => {
+      codeTabHeaders.forEach(h => h.classList.remove('active'));
+      header.classList.add('active');
+      const idx = header.dataset.qtab;
+      document.querySelectorAll('.code-tab-content').forEach(tc => tc.style.display = 'none');
+      const active = document.getElementById('qtab-' + idx);
+      if (active) active.style.display = 'block';
+    });
+  });
+
+  // ─── Ecosystem filter ───
+  const filterBtns = document.querySelectorAll('.eco-filter-btn');
+  const ecoCards = document.querySelectorAll('.eco-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      ecoCards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ─── Forge status animation ───
+  const statusEl = document.getElementById('forge-status');
+  const statusText = document.getElementById('forge-status-text');
+  if (statusEl && statusText) {
+    const states = [
+      { cls: 'fixing', text: '⟳ Verify loop active — checking tests...' },
+      { cls: 'checking', text: '⟳ Running verification...' },
+      { cls: 'passed', text: '✓ Verify loop complete — all tests pass' },
+    ];
+    let stateIdx = 0;
+    setInterval(() => {
+      stateIdx = (stateIdx + 1) % states.length;
+      const state = states[stateIdx];
+      statusEl.className = 'forge-status ' + state.cls;
+      statusText.textContent = state.text;
+    }, 5000);
+  }
+
+  // ─── Mobile menu toggle ───
+  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+  const navbarLinks = document.querySelector('.navbar-links');
+  if (mobileMenuBtn && navbarLinks) {
+    mobileMenuBtn.addEventListener('click', () => {
+      const isOpen = navbarLinks.style.display === 'flex';
+      navbarLinks.style.display = isOpen ? 'none' : 'flex';
+      navbarLinks.style.flexDirection = 'column';
+      navbarLinks.style.position = 'absolute';
+      navbarLinks.style.top = '64px';
+      navbarLinks.style.left = '0';
+      navbarLinks.style.right = '0';
+      navbarLinks.style.background = 'var(--bg-primary)';
+      navbarLinks.style.padding = '20px';
+      navbarLinks.style.borderBottom = '1px solid var(--border)';
+    });
+  }
+
+  // ─── Benchmark bar animation ───
+  const barFills = document.querySelectorAll('.chart-bar-fill');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fills = entry.target.querySelectorAll('.chart-bar-fill');
+        fills.forEach(fill => {
+          const width = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => { fill.style.width = width; }, 200);
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  const comparisonChart = document.querySelector('.comparison-chart');
+  if (comparisonChart) barObserver.observe(comparisonChart);
+});
+</script>
+
+</body>
+</html>
