@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-fuzzer"
+version = "0.1.0"
+description = "Adversarial scenario generation and testing for coding agents"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2.0", "pyyaml>=6.0", "click>=8.0", "rich>=13.0", "jinja2>=3.1"]
+
+[project.scripts]
+agentfuzzer = "agent_fuzzer.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_fuzzer"]

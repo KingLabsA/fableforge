@@ -1,0 +1,272 @@
+[
+  {
+    "id": "sec-001",
+    "language": "python",
+    "description": "SQL injection via string formatting",
+    "bug_type": "sql_injection",
+    "vulnerable": "query = f\"SELECT * FROM users WHERE name = '{username}'\"\ncursor.execute(query)",
+    "secure": "query = \"SELECT * FROM users WHERE name = %s\"\ncursor.execute(query, (username,))",
+    "expected_issue": "SQL injection via f-string interpolation"
+  },
+  {
+    "id": "sec-002",
+    "language": "python",
+    "description": "Command injection via shell=True",
+    "bug_type": "command_injection",
+    "vulnerable": "subprocess.run(f'ls {user_input}', shell=True)",
+    "secure": "subprocess.run(['ls', user_input], shell=False)",
+    "expected_issue": "Command injection via shell=True with user input"
+  },
+  {
+    "id": "sec-003",
+    "language": "python",
+    "description": "Hardcoded credentials",
+    "bug_type": "hardcoded_credential",
+    "vulnerable": "db.connect(host='prod-db', user='admin', password='P@ssw0rd!')",
+    "secure": "db.connect(host=os.environ['DB_HOST'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'])",
+    "expected_issue": "Hardcoded password in source code"
+  },
+  {
+    "id": "sec-004",
+    "language": "python",
+    "description": "Path traversal",
+    "bug_type": "path_traversal",
+    "vulnerable": "filepath = os.path.join('/uploads', filename)\nwith open(filepath) as f:\n    return f.read()",
+    "secure": "safe_path = os.path.realpath(os.path.join('/uploads', filename))\nif not safe_path.startswith('/uploads/'):\n    raise ValueError('Invalid path')\nwith open(safe_path) as f:\n    return f.read()",
+    "expected_issue": "Path traversal: no validation of filename before joining"
+  },
+  {
+    "id": "sec-005",
+    "language": "python",
+    "description": "Insecure deserialization",
+    "bug_type": "insecure_deserialization",
+    "vulnerable": "import pickle\ndata = pickle.loads(user_input)",
+    "secure": "import json\ndata = json.loads(user_input)",
+    "expected_issue": "Pickle deserialization of untrusted data enables RCE"
+  },
+  {
+    "id": "sec-006",
+    "language": "python",
+    "description": "eval() on user input",
+    "bug_type": "code_injection",
+    "vulnerable": "result = eval(user_expression)",
+    "secure": "result = ast.literal_eval(user_expression)",
+    "expected_issue": "eval() on untrusted input enables arbitrary code execution"
+  },
+  {
+    "id": "sec-007",
+    "language": "python",
+    "description": "Weak hashing algorithm",
+    "bug_type": "weak_crypto",
+    "vulnerable": "import hashlib\nhashed = hashlib.md5(password.encode()).hexdigest()",
+    "secure": "import hashlib\nhashed = hashlib.sha256(password.encode()).hexdigest()",
+    "expected_issue": "MD5 is cryptographically broken; use SHA-256 or bcrypt"
+  },
+  {
+    "id": "sec-008",
+    "language": "python",
+    "description": "Missing HTTPS/TLS",
+    "bug_type": "insecure_transport",
+    "vulnerable": "response = requests.get(f'http://api.example.com/data?id={user_id}')",
+    "secure": "response = requests.get(f'https://api.example.com/data?id={user_id}')",
+    "expected_issue": "Unencrypted HTTP transmission of potentially sensitive data"
+  },
+  {
+    "id": "sec-009",
+    "language": "python",
+    "description": "CORS wildcard",
+    "bug_type": "misconfigured_cors",
+    "vulnerable": "app.add_middleware(CORSMiddleware, allow_origins=['*'])",
+    "secure": "app.add_middleware(CORSMiddleware, allow_origins=['https://trusted.example.com'])",
+    "expected_issue": "CORS allows all origins; restrict to known domains"
+  },
+  {
+    "id": "sec-010",
+    "language": "python",
+    "description": "Exception leaking sensitive info",
+    "bug_type": "info_leakage",
+    "vulnerable": "except Exception as e:\n    return {'error': str(e), 'traceback': traceback.format_exc()}",
+    "secure": "except Exception as e:\n    logger.error(f'Error: {e}', exc_info=True)\n    return {'error': 'Internal server error'}",
+    "expected_issue": "Stack trace and error details exposed to client"
+  },
+  {
+    "id": "sec-011",
+    "language": "python",
+    "description": "Missing authentication check",
+    "bug_type": "missing_auth",
+    "vulnerable": "@app.route('/admin/users')\ndef list_users():\n    return db.list_users()",
+    "secure": "@app.route('/admin/users')\n@require_role('admin')\ndef list_users():\n    return db.list_users()",
+    "expected_issue": "Admin endpoint has no authentication decorator"
+  },
+  {
+    "id": "sec-012",
+    "language": "python",
+    "description": "JWT without verification",
+    "bug_type": "broken_auth",
+    "vulnerable": "payload = jwt.decode(token, options={'verify_signature': False})",
+    "secure": "payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])",
+    "expected_issue": "JWT decoded without signature verification"
+  },
+  {
+    "id": "sec-013",
+    "language": "python",
+    "description": "Timing attack on password comparison",
+    "bug_type": "timing_attack",
+    "vulnerable": "return user.password == submitted_password",
+    "secure": "return hmac.compare_digest(user.password.encode(), submitted_password.encode())",
+    "expected_issue": "Direct string comparison vulnerable to timing attacks"
+  },
+  {
+    "id": "sec-014",
+    "language": "python",
+    "description": "Logging sensitive data",
+    "bug_type": "info_leakage",
+    "vulnerable": "logger.info(f'Login attempt: user={username} password={password}')",
+    "secure": "logger.info(f'Login attempt: user={username}')",
+    "expected_issue": "Password logged in plaintext"
+  },
+  {
+    "id": "sec-015",
+    "language": "python",
+    "description": "Insecure random for security tokens",
+    "bug_type": "weak_random",
+    "vulnerable": "token = str(random.randint(0, 999999))",
+    "secure": "import secrets\ntoken = secrets.token_hex(16)",
+    "expected_issue": "random module is not cryptographically secure; use secrets"
+  },
+  {
+    "id": "sec-016",
+    "language": "python",
+    "description": "XML external entity attack",
+    "bug_type": "xxe",
+    "vulnerable": "import xml.etree.ElementTree as ET\ndata = ET.fromstring(user_xml)",
+    "secure": "import defusedxml.ElementTree as ET\ndata = ET.fromstring(user_xml)",
+    "expected_issue": "XML parser vulnerable to XXE attacks"
+  },
+  {
+    "id": "sec-017",
+    "language": "python",
+    "description": "Missing input validation",
+    "bug_type": "missing_validation",
+    "vulnerable": "age = int(request.args.get('age'))",
+    "secure": "try:\n    age = int(request.args.get('age', '0'))\n    if not 0 <= age <= 150:\n        raise ValueError('Invalid age')\nexcept ValueError:\n    return {'error': 'Invalid age'}, 400",
+    "expected_issue": "No validation on parsed integer: accepts any value"
+  },
+  {
+    "id": "sec-018",
+    "language": "python",
+    "description": "Unrestricted file upload",
+    "bug_type": " unrestricted_upload",
+    "vulnerable": "file = request.files['upload']\nfile.save(f'/uploads/{file.filename}')",
+    "secure": "ALLOWED_EXT = {'.png', '.jpg', '.pdf'}\nfile = request.files['upload']\next = os.path.splitext(file.filename)[1].lower()\nif ext not in ALLOWED_EXT:\n    raise ValueError(f'File type {ext} not allowed')\nsafe_name = f'{uuid.uuid4().hex}{ext}'\nfile.save(f'/uploads/{safe_name}')",
+    "expected_issue": "No file type or size validation on upload"
+  },
+  {
+    "id": "sec-019",
+    "language": "python",
+    "description": "SSRF via user input URL",
+    "bug_type": "ssrf",
+    "vulnerable": "url = request.args.get('url')\nresponse = requests.get(url)",
+    "secure": "from urllib.parse import urlparse\nurl = request.args.get('url')\nparsed = urlparse(url)\nif parsed.hostname in ('localhost', '127.0.0.1', '169.254.169.254'):\n    raise ValueError('Internal URLs not allowed')\nif parsed.scheme not in ('http', 'https'):\n    raise ValueError('Only HTTP(S) allowed')\nresponse = requests.get(url)",
+    "expected_issue": "SSRF: arbitrary URL fetching without restriction"
+  },
+  {
+    "id": "sec-020",
+    "language": "python",
+    "description": "Prototype pollution in dict merge",
+    "bug_type": "prototype_pollution",
+    "vulnerable": "config = {}\nconfig.update(user_input)",
+    "secure": "ALLOWED_KEYS = {'theme', 'language', 'timezone'}\nconfig = {k: v for k, v in user_input.items() if k in ALLOWED_KEYS}",
+    "expected_issue": "Unrestricted dict update enables prototype pollution"
+  },
+  {
+    "id": "sec-021",
+    "language": "python",
+    "description": "Insecure cookie flags",
+    "bug_type": "insecure_cookie",
+    "vulnerable": "response.set_cookie('session', session_id)",
+    "secure": "response.set_cookie('session', session_id, httponly=True, secure=True, samesite='Lax')",
+    "expected_issue": "Cookie missing HttpOnly, Secure, and SameSite flags"
+  },
+  {
+    "id": "sec-022",
+    "language": "python",
+    "description": "Plaintext password storage",
+    "bug_type": "plaintext_storage",
+    "vulnerable": "user.password = password\nuser.save()",
+    "secure": "import bcrypt\nuser.password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())\nuser.save()",
+    "expected_issue": "Password stored in plaintext; must be hashed"
+  },
+  {
+    "id": "sec-023",
+    "language": "python",
+    "description": "Debug mode in production",
+    "bug_type": "debug_mode",
+    "vulnerable": "app.run(debug=True)",
+    "secure": "app.run(debug=os.environ.get('FLASK_DEBUG', 'false').lower() == 'true')",
+    "expected_issue": "Debug mode enabled; exposes debugger in production"
+  },
+  {
+    "id": "sec-024",
+    "language": "python",
+    "description": "Weak key generation",
+    "bug_type": "weak_key",
+    "vulnerable": "SECRET_KEY = 'my-secret-key'",
+    "secure": "import secrets\nSECRET_KEY = secrets.token_hex(32)",
+    "expected_issue": "Hardcoded weak secret key"
+  },
+  {
+    "id": "sec-025",
+    "language": "python",
+    "description": "SQL injection via string concat",
+    "bug_type": "sql_injection",
+    "vulnerable": "cursor.execute(\"SELECT * FROM products WHERE category = '\" + category + \"'\")",
+    "secure": "cursor.execute(\"SELECT * FROM products WHERE category = %s\", (category,))",
+    "expected_issue": "SQL injection via string concatenation"
+  },
+  {
+    "id": "sec-026",
+    "language": "python",
+    "description": "Missing rate limiting",
+    "bug_type": "missing_rate_limit",
+    "vulnerable": "@app.route('/login', methods=['POST'])\ndef login():\n    return authenticate(request)",
+    "secure": "@app.route('/login', methods=['POST'])\n@limiter.limit('5 per minute')\ndef login():\n    return authenticate(request)",
+    "expected_issue": "Login endpoint has no rate limiting; brute force possible"
+  },
+  {
+    "id": "sec-027",
+    "language": "python",
+    "description": "Improper error handling exposes internal state",
+    "bug_type": "info_leakage",
+    "vulnerable": "try:\n    result = compute()\nexcept Exception:\n    return jsonify({'error': str(e), 'type': type(e).__name__}), 500",
+    "secure": "try:\n    result = compute()\nexcept Exception as e:\n    logger.exception('Compute failed')\n    return jsonify({'error': 'Internal error'}), 500",
+    "expected_issue": "Error details expose internal state to client"
+  },
+  {
+    "id": "sec-028",
+    "language": "python",
+    "description": "YAML unsafe load",
+    "bug_type": "unsafe_deserialization",
+    "vulnerable": "import yaml\ndata = yaml.load(user_input)",
+    "secure": "import yaml\ndata = yaml.safe_load(user_input)",
+    "expected_issue": "yaml.load() is unsafe; use yaml.safe_load()"
+  },
+  {
+    "id": "sec-029",
+    "language": "python",
+    "description": "Regex denial of service",
+    "bug_type": "redos",
+    "vulnerable": "import re\npattern = re.compile(r'(a+)+$')\nif pattern.match(user_input):\n    return 'match'",
+    "secure": "import re\npattern = re.compile(r'a+$')\nif pattern.match(user_input):\n    return 'match'",
+    "expected_issue": "Catastrophic backtracking regex: ReDoS vulnerability"
+  },
+  {
+    "id": "sec-030",
+    "language": "python",
+    "description": "Insecure temporary file",
+    "bug_type": "insecure_temp_file",
+    "vulnerable": "with open(f'/tmp/config_{user_id}.json', 'w') as f:\n    json.dump(config, f)",
+    "secure": "import tempfile\nwith tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=True) as f:\n    json.dump(config, f)",
+    "expected_issue": "Predictable temp file path; race condition and symlink attack"
+  }
+]

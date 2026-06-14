@@ -1,0 +1,20 @@
+name: debug
+version: "1.0.0"
+description: "Diagnose and fix errors in code — read errors, trace root causes, apply targeted fixes"
+category: "core"
+tools:
+  - read
+  - bash
+  - grep
+triggers:
+  - "fix the bug"
+  - "debug this error"
+  - "there's an exception"
+  - "stack trace"
+  - "something is broken"
+author: "agentskills"
+license: "MIT"
+tags:
+  - debugging
+  - error-recovery
+  - diagnosis

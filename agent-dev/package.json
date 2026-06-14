@@ -1,0 +1,171 @@
+{
+  "name": "agent-dev",
+  "displayName": "AgentDev",
+  "description": "AI-powered development agent with verify-loop pattern for autonomous coding tasks",
+  "version": "0.1.0",
+  "publisher": "fableforge",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "agent",
+    "coding",
+    "assistant",
+    "llm"
+  ],
+  "activationEvents": [
+    "onCommand:agent-dev.runTask",
+    "onCommand:agent-dev.planTask",
+    "onCommand:agent-dev.configureProvider",
+    "onView:agent-dev-sidebar"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "agent-dev.runTask",
+        "title": "AgentDev: Run Task",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.planTask",
+        "title": "AgentDev: Plan Task",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.executePlan",
+        "title": "AgentDev: Execute Plan",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.stopAgent",
+        "title": "AgentDev: Stop Agent",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.configureProvider",
+        "title": "AgentDev: Configure Provider",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.showPlanPanel",
+        "title": "AgentDev: Show Plan",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.showExecutionPanel",
+        "title": "AgentDev: Show Execution",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.showVerifyPanel",
+        "title": "AgentDev: Show Verification",
+        "category": "AgentDev"
+      },
+      {
+        "command": "agent-dev.refreshSidebar",
+        "title": "AgentDev: Refresh Sidebar",
+        "category": "AgentDev"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "agent-dev-sidebar",
+          "title": "AgentDev",
+          "icon": "media/sidebar-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "agent-dev-sidebar": [
+        {
+          "id": "agent-dev-tasks",
+          "name": "Tasks"
+        },
+        {
+          "id": "agent-dev-history",
+          "name": "History"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "agent-dev-tasks",
+        "contents": "No active tasks.\n[Run a Task](command:agent-dev.runTask)\n[Plan a Task](command:agent-dev.planTask)"
+      },
+      {
+        "view": "agent-dev-history",
+        "contents": "No task history yet.\n[Run a Task](command:agent-dev.runTask)"
+      }
+    ],
+    "configuration": {
+      "title": "AgentDev",
+      "properties": {
+        "agent-dev.provider": {
+          "type": "string",
+          "default": "openai",
+          "enum": ["openai", "anthropic", "local"],
+          "description": "LLM provider to use for the agent"
+        },
+        "agent-dev.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for the selected provider"
+        },
+        "agent-dev.model": {
+          "type": "string",
+          "default": "gpt-4",
+          "description": "Model identifier for the selected provider"
+        },
+        "agent-dev.localEndpoint": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Endpoint URL for local model inference (Ollama or llama.cpp server)"
+        },
+        "agent-dev.maxRetries": {
+          "type": "number",
+          "default": 3,
+          "description": "Maximum verification-recovery loop iterations"
+        },
+        "agent-dev.verifyTests": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run test verification after execution"
+        },
+        "agent-dev.verifyLint": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run lint verification after execution"
+        },
+        "agent-dev.testCommand": {
+          "type": "string",
+          "default": "npm test",
+          "description": "Shell command to run tests for verification"
+        },
+        "agent-dev.lintCommand": {
+          "type": "string",
+          "default": "npm run lint",
+          "description": "Shell command to run linting for verification"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

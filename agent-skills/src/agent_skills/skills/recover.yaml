@@ -1,0 +1,21 @@
+name: recover
+version: "1.0.0"
+description: "Recover from errors — analyze failures, try alternative approaches, apply corrections"
+category: "core"
+tools:
+  - bash
+  - edit
+  - read
+  - grep
+triggers:
+  - "that didn't work"
+  - "try again"
+  - "still failing"
+  - "alternative approach"
+  - "recovery"
+author: "agentskills"
+license: "MIT"
+tags:
+  - error-recovery
+  - retry
+  - fallback

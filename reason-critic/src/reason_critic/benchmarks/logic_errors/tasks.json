@@ -1,0 +1,272 @@
+[
+  {
+    "id": "le-001",
+    "language": "python",
+    "description": "FizzBuzz wrong condition order",
+    "bug_type": "condition_order",
+    "buggy": "def fizzbuzz(n):\n    if n % 3 == 0: return 'Fizz'\n    elif n % 5 == 0: return 'Buzz'\n    elif n % 15 == 0: return 'FizzBuzz'\n    return str(n)",
+    "correct": "def fizzbuzz(n):\n    if n % 15 == 0: return 'FizzBuzz'\n    elif n % 3 == 0: return 'Fizz'\n    elif n % 5 == 0: return 'Buzz'\n    return str(n)",
+    "expected_issue": "15-divisible numbers show Fizz instead of FizzBuzz"
+  },
+  {
+    "id": "le-002",
+    "language": "python",
+    "description": "Boolean logic inverted",
+    "bug_type": "inverted_logic",
+    "buggy": "def is_adult(age):\n    return not age >= 18",
+    "correct": "def is_adult(age):\n    return age >= 18",
+    "expected_issue": "Boolean logic inverted: returns True for minors"
+  },
+  {
+    "id": "le-003",
+    "language": "python",
+    "description": "Short-circuit evaluation error",
+    "bug_type": "short_circuit",
+    "buggy": "if data and data.get('key') == 'value':",
+    "correct": "if data is not None and data.get('key') == 'value':",
+    "expected_issue": "Empty dict {} is falsy but valid; should check None explicitly"
+  },
+  {
+    "id": "le-004",
+    "language": "python",
+    "description": "Incorrect loop condition",
+    "bug_type": "wrong_condition",
+    "buggy": "while i < len(items) - 1:\n    process(items[i])\n    i += 1",
+    "correct": "while i < len(items):\n    process(items[i])\n    i += 1",
+    "expected_issue": "Last element never processed due to off-by-one"
+  },
+  {
+    "id": "le-005",
+    "language": "python",
+    "description": "Wrong comparison direction",
+    "bug_type": "wrong_comparison",
+    "buggy": "if score < passing_grade:\n    return 'pass'",
+    "correct": "if score >= passing_grade:\n    return 'pass'",
+    "expected_issue": "Pass/fail logic inverted"
+  },
+  {
+    "id": "le-006",
+    "language": "python",
+    "description": "De Morgan's law violation",
+    "bug_type": "de_morgan",
+    "buggy": "if not (x > 0 and y > 0):\n    return 'both positive'",
+    "correct": "if x > 0 and y > 0:\n    return 'both positive'",
+    "expected_issue": "De Morgan's law violation: double negation"
+  },
+  {
+    "id": "le-007",
+    "language": "python",
+    "description": "Early return in loop",
+    "bug_type": "early_return",
+    "buggy": "def find_first_even(numbers):\n    for n in numbers:\n        if n % 2 == 0:\n            return n\n    return None",
+    "correct": "def find_all_even(numbers):\n    return [n for n in numbers if n % 2 == 0]",
+    "expected_issue": "Function returns first even instead of all evens (if intended to find all)"
+  },
+  {
+    "id": "le-008",
+    "language": "python",
+    "description": "Assignment in conditional",
+    "bug_type": "assignment_in_conditional",
+    "buggy": "if result = compute():\n    process(result)",
+    "correct": "if (result := compute()):\n    process(result)",
+    "expected_issue": "Single = assignment in conditional instead of := walrus or =="
+  },
+  {
+    "id": "le-009",
+    "language": "python",
+    "description": "Integer division instead of float",
+    "bug_type": "integer_division",
+    "buggy": "average = total // count",
+    "correct": "average = total / count",
+    "expected_issue": "Floor division // produces integer; likely need float /"
+  },
+  {
+    "id": "le-010",
+    "language": "python",
+    "description": "Incorrect list comprehension condition",
+    "bug_type": "wrong_filter",
+    "buggy": "[x for x in items if x < 0]",
+    "correct": "[x for x in items if x >= 0]",
+    "expected_issue": "Filter keeps negative numbers instead of non-negative"
+  },
+  {
+    "id": "le-011",
+    "language": "python",
+    "description": "String comparison case sensitivity",
+    "bug_type": "case_sensitivity",
+    "buggy": "if user_input == 'yes':\n    proceed()",
+    "correct": "if user_input.lower() == 'yes':\n    proceed()",
+    "expected_issue": "Comparison is case-sensitive; 'Yes' or 'YES' not handled"
+  },
+  {
+    "id": "le-012",
+    "language": "python",
+    "description": "Wrong dict key",
+    "bug_type": "wrong_key",
+    "buggy": "name = user['Name']",
+    "correct": "name = user['name']",
+    "expected_issue": "Key 'Name' does not match dict key 'name'"
+  },
+  {
+    "id": "le-013",
+    "language": "python",
+    "description": "Unreachable branch",
+    "bug_type": "unreachable_code",
+    "buggy": "if x > 10:\n    return 'big'\nelif x > 20:\n    return 'very big'",
+    "correct": "if x > 20:\n    return 'very big'\nelif x > 10:\n    return 'big'",
+    "expected_issue": "elif x > 20 is unreachable; x > 10 already caught it"
+  },
+  {
+    "id": "le-014",
+    "language": "python",
+    "description": "Wrong index in nested loop",
+    "bug_type": "wrong_index",
+    "buggy": "for i in range(len(matrix)):\n    for j in range(len(matrix)):\n        total += matrix[i][i]",
+    "correct": "for i in range(len(matrix)):\n    for j in range(len(matrix[i])):\n        total += matrix[i][j]",
+    "expected_issue": "Uses [i][i] instead of [i][j]; only sums diagonal"
+  },
+  {
+    "id": "le-015",
+    "language": "python",
+    "description": "Swapped min/max",
+    "bug_type": "swapped_min_max",
+    "buggy": "best = min(scores)\nworst = max(scores)",
+    "correct": "best = max(scores)\nworst = min(scores)",
+    "expected_issue": "min and max swapped: best should be max, worst should be min"
+  },
+  {
+    "id": "le-016",
+    "language": "python",
+    "description": "Missing break in switch equivalent",
+    "bug_type": "fallthrough",
+    "buggy": "match status:\n    case 'active':\n        enable()\n    case 'pending':\n        queue()\n    case 'closed':\n        disable()",
+    "correct": "match status:\n    case 'active':\n        enable()\n        # handled\n    case 'pending':\n        queue()\n        # handled\n    case 'closed':\n        disable()",
+    "expected_issue": "In languages with fallthrough, case 'active' would also execute queue() and disable()"
+  },
+  {
+    "id": "le-017",
+    "language": "python",
+    "description": "Global variable side effect",
+    "bug_type": "global_side_effect",
+    "buggy": "count = 0\ndef increment():\n    count = count + 1",
+    "correct": "count = 0\ndef increment():\n    global count\n    count += 1",
+    "expected_issue": "Without global declaration, creates local shadow; original count unchanged"
+  },
+  {
+    "id": "le-018",
+    "language": "python",
+    "description": "Wrong assert direction",
+    "bug_type": "wrong_assert",
+    "buggy": "assert not result, 'Expected empty'",
+    "correct": "assert result, 'Expected non-empty'",
+    "expected_issue": "Assert condition inverted"
+  },
+  {
+    "id": "le-019",
+    "language": "python",
+    "description": "Float equality comparison",
+    "bug_type": "float_equality",
+    "buggy": "if total == 0.1 + 0.2:",
+    "correct": "if abs(total - (0.1 + 0.2)) < 1e-9:",
+    "expected_issue": "Direct float equality unreliable due to floating point precision"
+  },
+  {
+    "id": "le-020",
+    "language": "python",
+    "description": "Wrong exception type caught",
+    "bug_type": "wrong_exception",
+    "buggy": "try:\n    result = int(text)\nexcept ValueError:\n    result = 0\nexcept TypeError:\n    result = 0",
+    "correct": "try:\n    result = int(text)\nexcept (ValueError, TypeError) as e:\n    result = 0",
+    "expected_issue": "Catches ValueError and TypeError separately when both could be handled together"
+  },
+  {
+    "id": "le-021",
+    "language": "python",
+    "description": "Swapped function arguments",
+    "bug_type": "swapped_args",
+    "buggy": "result = divide(divisor, dividend)",
+    "correct": "result = divide(dividend, divisor)",
+    "expected_issue": "Arguments swapped: divisor and dividend in wrong order"
+  },
+  {
+    "id": "le-022",
+    "language": "python",
+    "description": "Using list as dict key",
+    "bug_type": "unhashable_key",
+    "buggy": "lookup[[1, 2, 3]] = 'value'",
+    "correct": "lookup[tuple([1, 2, 3])] = 'value'",
+    "expected_issue": "List is unhashable; cannot be used as dict key. Use tuple."
+  },
+  {
+    "id": "le-023",
+    "language": "python",
+    "description": "Wrong scope variable",
+    "bug_type": "wrong_scope",
+    "buggy": "total = 0\nfor items in groups:\n    for item in items:\n        total += item\n    print(f'Group total: {total}')",
+    "correct": "for items in groups:\n    group_total = 0\n    for item in items:\n        group_total += item\n    print(f'Group total: {group_total}')",
+    "expected_issue": "accumulator not reset between groups; running total instead of per-group"
+  },
+  {
+    "id": "le-024",
+    "language": "python",
+    "description": "Overly broad except clause",
+    "bug_type": "broad_except",
+    "buggy": "try:\n    save(data)\nexcept Exception:\n    pass",
+    "correct": "try:\n    save(data)\nexcept (IOError, PermissionError) as e:\n    logger.error(f'Save failed: {e}')\n    raise",
+    "expected_issue": "Bare except catches everything including KeyboardInterrupt and silently passes"
+  },
+  {
+    "id": "le-025",
+    "language": "python",
+    "description": "Incorrect string formatting",
+    "bug_type": "format_error",
+    "buggy": "msg = 'Hello %s, you have %d messages' % (name)",
+    "correct": "msg = 'Hello %s, you have %d messages' % (name, count)",
+    "expected_issue": "Format string has 2 placeholders but only 1 argument provided"
+  },
+  {
+    "id": "le-026",
+    "language": "python",
+    "description": "Identity vs equality",
+    "bug_type": "identity_vs_equality",
+    "buggy": "if name is 'admin':\n    grant_access()",
+    "correct": "if name == 'admin':\n    grant_access()",
+    "expected_issue": "is checks identity not equality; string interning unreliable"
+  },
+  {
+    "id": "le-027",
+    "language": "python",
+    "description": "Wrong order of operations",
+    "bug_type": "order_of_ops",
+    "buggy": "result = a + b * c",
+    "correct": "result = (a + b) * c",
+    "expected_issue": "Multiplication has higher precedence than addition; parentheses needed"
+  },
+  {
+    "id": "le-028",
+    "language": "python",
+    "description": "Incorrect boolean assignment in loop",
+    "bug_type": "boolean_logic",
+    "buggy": "found = False\nfor item in items:\n    if item == target:\n        found = True\n    else:\n        found = False",
+    "correct": "found = False\nfor item in items:\n    if item == target:\n        found = True",
+    "expected_issue": "found resets to False on each non-match; only last comparison matters"
+  },
+  {
+    "id": "le-029",
+    "language": "python",
+    "description": "Modifying collection while iterating",
+    "bug_type": "iterate_and_modify",
+    "buggy": "for item in items:\n    if item.invalid:\n        items.remove(item)",
+    "correct": "items = [item for item in items if not item.invalid]",
+    "expected_issue": "Modifying list while iterating causes skipped elements"
+  },
+  {
+    "id": "le-030",
+    "language": "python",
+    "description": "Wrong return in generator",
+    "bug_type": "generator_return",
+    "buggy": "def get_values():\n    yield 1\n    yield 2\n    return [3, 4]",
+    "correct": "def get_values():\n    yield 1\n    yield 2\n    yield 3\n    yield 4",
+    "expected_issue": "return in generator sets StopIteration value; values 3,4 never yielded"
+  }
+]

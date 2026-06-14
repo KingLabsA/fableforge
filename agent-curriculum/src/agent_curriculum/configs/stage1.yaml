@@ -1,0 +1,9 @@
+stage_id: 1
+name: basic
+description: "Basic tool use — simple read/edit/bash tasks with no errors"
+difficulty_range: [0.0, 0.2]
+num_traces: 0
+learning_rate: 0.0002
+batch_size: 8
+num_epochs: 3
+lora_r: 64

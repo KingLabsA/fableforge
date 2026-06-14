@@ -1,0 +1,191 @@
+name: Ecosystem Integration Issue
+description: Report problems with FableForge project integrations
+title: "[INTEGRATION] "
+labels: ["integration", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## FableForge Ecosystem Integration Issue
+
+        Use this template when two or more FableForge projects don't work together as expected.
+        For example: Anvil → VerifyLoop handoff failures, model integration bugs, or
+        pipeline composition issues.
+
+        **Before opening**, please:
+        - Verify both projects are on compatible versions (check the [compatibility matrix](https://fableforge.readthedocs.io/en/latest/compatibility/))
+        - Confirm both projects work independently
+        - Search [existing integration issues](../../issues?q=label%3Aintegration)
+
+  - type: dropdown
+    id: source-project
+    attributes:
+      label: Source Project
+      description: Which project is producing the output that gets passed to the target?
+      options:
+        - Anvil
+        - VerifyLoop
+        - ErrorRecovery
+        - ShellWhisperer
+        - ReasonCritic
+        - FableForge-14B
+        - AgentSwarm
+        - BenchAgent
+        - CodeDistiller
+        - TraceCompiler
+        - DatasetPipeline
+        - RLHFLoop
+        - DPOTrainer
+        - SkillDistiller
+        - PromptForge
+        - ModelMerger
+        - EvalSuite
+        - AnvilCLI
+        - AnvilAPI
+        - AnvilSDK
+        - External tool (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target-project
+    attributes:
+      label: Target Project
+      description: Which project is receiving or consuming the output?
+      options:
+        - Anvil
+        - VerifyLoop
+        - ErrorRecovery
+        - ShellWhisperer
+        - ReasonCritic
+        - FableForge-14B
+        - AgentSwarm
+        - BenchAgent
+        - CodeDistiller
+        - TraceCompiler
+        - DatasetPipeline
+        - RLHFLoop
+        - DPOTrainer
+        - SkillDistiller
+        - PromptForge
+        - ModelMerger
+        - EvalSuite
+        - AnvilCLI
+        - AnvilAPI
+        - AnvilSDK
+        - External tool (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: integration-type
+    attributes:
+      label: Integration Type
+      description: What type of integration is failing?
+      options:
+        - Anvil → VerifyLoop (generation verification)
+        - Anvil → ErrorRecovery (generation error recovery)
+        - VerifyLoop → Anvil (repair feedback loop)
+        - Anvil → BenchAgent (benchmarking generated artifacts)
+        - Anvil → CodeDistiller (distilling generation traces)
+        - DatasetPipeline → DPOTrainer (preference data → training)
+        - DatasetPipeline → RLHFLoop (RLHF data → training)
+        - CodeDistiller → SkillDistiller (trace → skill extraction)
+        - TraceCompiler → Anvil (optimized traces → generation)
+        - AgentSwarm → Anvil (multi-agent → generation)
+        - AnvilCLI → Anvil (CLI → core engine)
+        - AnvilAPI → Anvil (API server → core engine)
+        - AnvilSDK → Anvil (Python SDK → core engine)
+        - ModelMerger → FableForge-14B (merge → base model)
+        - EvalSuite → BenchAgent (evaluation → benchmarking)
+        - ShellWhisperer → Anvil (shell model → generation)
+        - ReasonCritic → VerifyLoop (critic model → verification)
+        - Custom pipeline (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen when these projects interact?
+      placeholder: |
+        When Anvil generates a Python project and passes it to VerifyLoop, VerifyLoop
+        should run all verification checks and report back with a structured result.
+        The pipeline should then either pass the artifact to ErrorRecovery (if checks
+        fail) or write it to the output directory (if all checks pass).
+
+        Command:
+        ```
+        anvil run "Build a CLI tool" --verify --max-retries 3
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened at the integration boundary?
+      placeholder: |
+        Anvil generates the project successfully, but when VerifyLoop receives the
+        output, it throws a `KeyError: 'artifact_path'` because Anvil's output
+        schema uses `output_dir` while VerifyLoop expects `artifact_path`.
+
+        The integration fails at the point where VerifyLoop tries to read the
+        generation result from Anvil.
+    validations:
+      required: true
+
+  - type: textarea
+    id: traceback
+    attributes:
+      label: Traceback / Error Output
+      description: |
+        Paste the full traceback or error output from the integration failure.
+        Include logs from **both** projects if possible.
+      placeholder: |
+        [Anvil] Generation complete. Output schema:
+        {"output_dir": "/tmp/anvil_output", "files": ["main.py", "utils.py"]}
+
+        [VerifyLoop] Received artifact from Anvil
+        Traceback (most recent call last):
+          File "verifyloop/pipeline.py", line 89, in verify
+            path = result["artifact_path"]
+        KeyError: 'artifact_path'
+
+        [VerifyLoop] Expected keys: {'artifact_path', 'config', 'metadata'}
+        [VerifyLoop] Received keys: {'output_dir', 'files'}
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: versions
+    attributes:
+      label: Version Information
+      description: List the versions of all projects involved in the integration.
+      placeholder: |
+        anvil==0.8.2
+        verifyloop==0.3.1
+        errorrecovery==0.2.0
+        Python 3.11.5
+        OS: Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: |
+        Any configuration files, pipeline definitions, or other context that could help
+        reproduce the integration issue. Remove sensitive information before posting.
+      placeholder: |
+        - Using the default pipeline config from anvil init
+        - Both projects work fine in isolation
+        - This integration worked in anvil==0.7.x and verifyloop==0.2.x
+        - Similar issue reported in #198 but for a different integration path
+    validations:
+      required: false

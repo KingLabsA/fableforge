@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — This Page Got Reforged | Anvil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --border: #262626;
+  --text-primary: #fafafa;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #666666;
+  --accent: #f59e0b;
+  --accent-hover: #d97706;
+  --accent-glow: rgba(245, 158, 11, 0.15);
+  --accent-dim: rgba(245, 158, 11, 0.08);
+  --success: #22c55e;
+  --error: #ef4444;
+  --code-bg: #0d0d0d;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --radius: 12px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 680px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+/* Animated sparks background */
+.sparks-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkFloat 3s ease-out infinite;
+}
+
+@keyframes sparkFloat {
+  0% { opacity: 0; transform: translateY(0) scale(1); }
+  20% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-200px) translateX(30px) scale(0); }
+}
+
+.spark:nth-child(1) { left: 15%; bottom: 30%; animation-delay: 0s; animation-duration: 2.5s; }
+.spark:nth-child(2) { left: 25%; bottom: 40%; animation-delay: 0.4s; animation-duration: 3s; }
+.spark:nth-child(3) { left: 45%; bottom: 25%; animation-delay: 0.8s; animation-duration: 2.8s; }
+.spark:nth-child(4) { left: 55%; bottom: 35%; animation-delay: 1.2s; animation-duration: 2.2s; }
+.spark:nth-child(5) { left: 70%; bottom: 30%; animation-delay: 0.6s; animation-duration: 3.2s; }
+.spark:nth-child(6) { left: 80%; bottom: 45%; animation-delay: 1s; animation-duration: 2.6s; }
+.spark:nth-child(7) { left: 35%; bottom: 20%; animation-delay: 1.5s; animation-duration: 2.9s; }
+.spark:nth-child(8) { left: 60%; bottom: 28%; animation-delay: 0.2s; animation-duration: 3.1s; }
+
+/* Anvil strike animation */
+.anvil-visual {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 32px;
+  z-index: 1;
+}
+
+.anvil-base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 60px;
+  background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);
+  border-radius: 0 0 12px 12px;
+  border: 2px solid #444;
+  border-top: none;
+}
+
+.anvil-top {
+  position: absolute;
+  bottom: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 20px;
+  background: linear-gradient(180deg, #555 0%, #333 100%);
+  border-radius: 6px 6px 0 0;
+  border: 2px solid #555;
+  border-bottom: none;
+}
+
+.hammer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-origin: bottom center;
+  animation: hammerStrike 2.5s ease-in-out infinite;
+}
+
+.hammer-head {
+  width: 50px;
+  height: 24px;
+  background: linear-gradient(180deg, #666 0%, #444 100%);
+  border: 2px solid #777;
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: -25px;
+}
+
+.hammer-handle {
+  width: 6px;
+  height: 60px;
+  background: linear-gradient(180deg, #8B6914 0%, #654A0E 100%);
+  border-radius: 3px;
+  position: absolute;
+  top: 22px;
+  left: -3px;
+}
+
+@keyframes hammerStrike {
+  0% { transform: translateX(-50%) rotate(-30deg); }
+  45% { transform: translateX(-50%) rotate(-30deg); }
+  50% { transform: translateX(-50%) rotate(0deg); }
+  55% { transform: translateX(-50%) rotate(-5deg); }
+  60% { transform: translateX(-50%) rotate(0deg); }
+  100% { transform: translateX(-50%) rotate(-30deg); }
+}
+
+.impact-flash {
+  position: absolute;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: radial-gradient(ellipse, var(--accent) 0%, transparent 70%);
+  opacity: 0;
+  animation: flashImpact 2.5s ease-out infinite;
+}
+
+@keyframes flashImpact {
+  0%, 48% { opacity: 0; }
+  50% { opacity: 0.8; }
+  55% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.error-code {
+  font-size: 7rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 60px rgba(245, 158, 11, 0.3);
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { text-shadow: 0 0 60px rgba(245, 158, 11, 0.3); }
+  50% { text-shadow: 0 0 80px rgba(245, 158, 11, 0.5), 0 0 120px rgba(245, 158, 11, 0.2); }
+}
+
+.error-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.error-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-subtitle strong {
+  color: var(--accent);
+}
+
+/* Terminal error display */
+.terminal-error {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+.terminal-header .dot.red { background: #ef4444; }
+.terminal-header .dot.yellow { background: #eab308; }
+.terminal-header .dot.green { background: #22c55e; }
+
+.terminal-header .title {
+  margin-left: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+.terminal-body {
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.terminal-body .prompt { color: var(--accent); }
+.terminal-body .cmd { color: var(--text-primary); }
+.terminal-body .error { color: #ef4444; }
+.terminal-body .dim { color: var(--text-tertiary); }
+.terminal-body .success { color: var(--success); }
+.terminal-body .accent { color: var(--accent); }
+
+/* Search */
+.search-box {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  margin: 0 auto 32px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 20px 14px 44px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+
+/* Links */
+.links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 48px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 30px rgba(245,158,11,0.15);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(245,158,11,0.25);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+  transform: translateY(-2px);
+}
+
+/* Suggestions */
+.suggestions {
+  position: relative;
+  z-index: 1;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.suggestions h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 12px;
+}
+
+.suggestion-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestion-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.suggestion-list a:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  background: var(--accent-dim);
+}
+
+.suggestion-list a i {
+  color: var(--accent);
+  font-size: 0.85rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* Footer */
+.footer-msg {
+  position: relative;
+  z-index: 1;
+  margin-top: 48px;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.footer-msg a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer-msg a:hover {
+  color: var(--accent-hover);
+}
+
+@media (max-width: 640px) {
+  .error-code { font-size: 5rem; }
+  .error-title { font-size: 1.2rem; }
+  .error-subtitle { font-size: 0.9rem; }
+  .terminal-error { max-width: 100%; }
+  .links { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="sparks-bg">
+  <div class="spark"></div>
+  <div class="spark"></div>
+  <div class="spark"></div>
+  <div class="spark"></div>
+  <div class="spark"></div>
+  <div class="spark"></div>
+  <div class="spark"></div>
+  <div class="spark"></div>
+</div>
+
+<div class="container">
+  <div class="anvil-visual">
+    <div class="hammer">
+      <div class="hammer-head"></div>
+      <div class="hammer-handle"></div>
+    </div>
+    <div class="impact-flash"></div>
+    <div class="anvil-top"></div>
+    <div class="anvil-base"></div>
+  </div>
+
+  <div class="error-code">404</div>
+  <div class="error-title">This Page Got Reforged</div>
+  <p class="error-subtitle">
+    The verify loop ran on this URL and couldn't find a passing route. 
+    It may have been <strong>hammered into a new shape</strong>, moved, or never existed in the first place.
+  </p>
+
+  <div class="terminal-error">
+    <div class="terminal-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="title">anvil — verify-route</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="prompt">$</span> <span class="cmd">anvil verify-route</span> <span class="accent">/this-page</span></div>
+      <div class="dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+      <div><span class="accent">⊕ Planning</span>  Resolving route /this-page...</div>
+      <div class="error">  FAIL RouteNotFoundError: no matching handler</div>
+      <div><span class="error">✗ Recover</span>  Searched 21 sitemap entries — 0 matches</div>
+      <div class="success">  <span class="success">✓ Suggestion</span>: Try one of the routes below</div>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" class="search-input" placeholder="Search the forge..." id="search-input" aria-label="Search the site">
+  </div>
+
+  <div class="links">
+    <a href="/" class="btn btn-primary">
+      <i class="fas fa-hammer"></i> Back to the Forge
+    </a>
+    <a href="https://github.com/fableforge" class="btn btn-secondary" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i> View on GitHub
+    </a>
+    <a href="/docs" class="btn btn-secondary">
+      <i class="fas fa-book"></i> Read the Docs
+    </a>
+  </div>
+
+  <div class="suggestions">
+    <h3>Popular Routes</h3>
+    <ul class="suggestion-list">
+      <li>
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Homepage — Anvil overview and quick start
+        </a>
+      </li>
+      <li>
+        <a href="/docs">
+          <i class="fas fa-book"></i>
+          Documentation — API reference and guides
+        </a>
+      </li>
+      <li>
+        <a href="/docs/quick-start">
+          <i class="fas fa-bolt"></i>
+          Quick Start — Up and running in 30 seconds
+        </a>
+      </li>
+      <li>
+        <a href="/ecosystem">
+          <i class="fas fa-project-diagram"></i>
+          Ecosystem — All 21 projects
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/fableforge" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+          GitHub — Source code and contributions
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="footer-msg">
+    Forged with 🔨 and tested until it held — 
+    <a href="/">Anvil</a> by <a href="https://github.com/fableforge">FableForge</a>
+  </div>
+</div>
+
+<script>
+const searchInput = document.getElementById('search-input');
+if (searchInput) {
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const query = searchInput.value.trim();
+      if (query) {
+        window.location.href = '/search?q=' + encodeURIComponent(query);
+      } else {
+        window.location.href = '/';
+      }
+    }
+  });
+}
+</script>
+
+</body>
+</html>

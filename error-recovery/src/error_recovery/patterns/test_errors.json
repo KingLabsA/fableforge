@@ -1,0 +1,167 @@
+[
+  {
+    "error_type": "test_error",
+    "error_message": "assertion failed",
+    "pattern": "AssertionError|assertion failed|assert.*failed",
+    "recovery_prompt": "An assertion failed. Try: (1) read the assertion message for details, (2) check the expected vs actual values, (3) verify test data setup, (4) check for timing issues or race conditions, (5) ensure mocks are configured correctly.",
+    "success_rate": 0.75,
+    "tags": [
+      "test",
+      "assertion"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "expected but got",
+    "pattern": "expected.*but got|expected.*got|Expected.*Actual",
+    "recovery_prompt": "Test expected one value but received another. Try: (1) compare expected and actual carefully, (2) check types (string vs number), (3) check for off-by-one errors, (4) verify test data is not mutated, (5) check for floating point comparison issues.",
+    "success_rate": 0.8,
+    "tags": [
+      "test",
+      "assertion"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test timed out",
+    "pattern": "timeout|timed? ?out|DeadlineExceeded",
+    "recovery_prompt": "Test execution timed out. Try: (1) check for infinite loops, (2) increase timeout if the test is legitimately slow, (3) mock external dependencies, (4) check for deadlock conditions, (5) reduce test data volume.",
+    "success_rate": 0.65,
+    "tags": [
+      "test",
+      "timeout"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "fixture not found",
+    "pattern": "fixture.*not found|fixture.*error|conftest",
+    "recovery_prompt": "The test fixture is not found. Try: (1) check the fixture name spelling, (2) ensure the fixture is defined in conftest.py or the test file, (3) check fixture scope, (4) verify fixture dependencies are correct.",
+    "success_rate": 0.82,
+    "tags": [
+      "test",
+      "fixture"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test module import error",
+    "pattern": "import error|module not found|cannot import.*test",
+    "recovery_prompt": "Cannot import the test module. Try: (1) check the module path, (2) ensure __init__.py files exist, (3) verify PYTHONPATH, (4) check for circular imports, (5) install missing dependencies.",
+    "success_rate": 0.78,
+    "tags": [
+      "test",
+      "import"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test failed with error",
+    "pattern": "test.*failed.*error|error.*test|FAILED|test.*ERROR",
+    "recovery_prompt": "Test errored (not just failed). Try: (1) read the full traceback, (2) check for unhandled exceptions, (3) verify test environment setup, (4) check for missing dependencies or configuration.",
+    "success_rate": 0.7,
+    "tags": [
+      "test",
+      "error"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "mock not called",
+    "pattern": "mock.*not called|expected.*call|assert_called|not.*called.*times",
+    "recovery_prompt": "The mock was not called as expected. Try: (1) verify the code path reaches the mocked function, (2) check mock is injected at the right point, (3) verify call arguments match, (4) check for early returns before the mocked call.",
+    "success_rate": 0.72,
+    "tags": [
+      "test",
+      "mock"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "flaky test",
+    "pattern": "flaky|intermittent|non.deterministic|sometimes.*fails",
+    "recovery_prompt": "The test appears flaky. Try: (1) add proper waits/syncs for async code, (2) avoid depending on execution order, (3) use deterministic test data, (4) mock time-dependent behavior, (5) isolate test state.",
+    "success_rate": 0.55,
+    "tags": [
+      "test",
+      "flaky"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test skipped unexpectedly",
+    "pattern": "skip|skipped|SKIPPED|xfail",
+    "recovery_prompt": "Test was unexpectedly skipped. Try: (1) check skip decorators and conditions, (2) verify required markers/mark, (3) ensure test dependencies are met, (4) check for @pytest.skipif conditions.",
+    "success_rate": 0.68,
+    "tags": [
+      "test",
+      "skip"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "coverage below threshold",
+    "pattern": "coverage.*below|coverage.*fail|total.*coverage",
+    "recovery_prompt": "Code coverage is below the required threshold. Try: (1) add tests for uncovered code paths, (2) check if coverage config is correct, (3) exclude non-testable code with pragma comments, (4) verify test collection isn't missing files.",
+    "success_rate": 0.7,
+    "tags": [
+      "test",
+      "coverage"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test database connection error",
+    "pattern": "database.*error|connection.*refused.*test|test db",
+    "recovery_prompt": "Test database connection failed. Try: (1) verify the test database is running, (2) check connection string in test config, (3) use an in-memory database for tests (SQLite :memory:), (4) check for port conflicts, (5) use test fixtures for DB setup/teardown.",
+    "success_rate": 0.75,
+    "tags": [
+      "test",
+      "database"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test environment variable not set",
+    "pattern": "environ|ENV|environment variable|not set",
+    "recovery_prompt": "Required environment variable is not set for tests. Try: (1) set it in conftest.py or test setup, (2) use pytest-env or pytest-dotenv, (3) provide defaults in test fixtures, (4) use .env.test file.",
+    "success_rate": 0.85,
+    "tags": [
+      "test",
+      "environment"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test file not found",
+    "pattern": "test.*file not found|no tests found|collected 0 items",
+    "recovery_prompt": "No tests were found. Try: (1) check test file naming convention (test_*.py), (2) verify test directory is in the test path, (3) check pytest configuration, (4) ensure test functions start with 'test_'.",
+    "success_rate": 0.82,
+    "tags": [
+      "test",
+      "discovery"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "TypeError in test",
+    "pattern": "TypeError.*test|test.*TypeError",
+    "recovery_prompt": "A TypeError occurred in a test. Try: (1) check function signatures for changes, (2) verify mock return types match expected types, (3) check for None values where objects are expected, (4) review the full traceback.",
+    "success_rate": 0.73,
+    "tags": [
+      "test",
+      "type"
+    ]
+  },
+  {
+    "error_type": "test_error",
+    "error_message": "test teardown error",
+    "pattern": "teardown|ERROR.*teardown|fixture.*teardown",
+    "recovery_prompt": "Error during test teardown. Try: (1) check fixture cleanup code, (2) verify resource cleanup order, (3) use try/finally for cleanup, (4) check for fixture dependency issues, (5) ensure cleanup is idempotent.",
+    "success_rate": 0.7,
+    "tags": [
+      "test",
+      "teardown"
+    ]
+  }
+]

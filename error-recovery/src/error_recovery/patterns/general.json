@@ -1,0 +1,253 @@
+[
+  {
+    "error_type": "network_error",
+    "error_message": "connection refused",
+    "pattern": "connection refused|ECONNREFUSED",
+    "recovery_prompt": "Connection refused by the server. Try: (1) verify the server is running, (2) check the host and port, (3) check firewall rules, (4) try increasing the timeout, (5) verify the service isn't overloaded.",
+    "success_rate": 0.85,
+    "tags": [
+      "network",
+      "connection"
+    ]
+  },
+  {
+    "error_type": "network_error",
+    "error_message": "DNS resolution failed",
+    "pattern": "dns.*error|dns.*fail|name.*resolution|name or service not known|NXDOMAIN",
+    "recovery_prompt": "DNS resolution failed. Try: (1) check the hostname spelling, (2) try with an IP address instead, (3) check /etc/hosts, (4) verify DNS server configuration, (5) try a different DNS resolver (e.g., 8.8.8.8).",
+    "success_rate": 0.78,
+    "tags": [
+      "network",
+      "dns"
+    ]
+  },
+  {
+    "error_type": "network_error",
+    "error_message": "SSL handshake error",
+    "pattern": "SSL.*handshake|TLS.*handshake|certificate.*verify|CERTIFICATE_VERIFY_FAILED",
+    "recovery_prompt": "SSL/TLS handshake failed. Try: (1) update CA certificates, (2) check for certificate expiry, (3) verify the hostname matches the certificate, (4) check TLS version compatibility, (5) for development only: disable verification (never in production).",
+    "success_rate": 0.62,
+    "tags": [
+      "network",
+      "ssl"
+    ]
+  },
+  {
+    "error_type": "network_error",
+    "error_message": "request timeout",
+    "pattern": "request.*timeout|timeout.*request|timed? ?out|ETIMEDOUT",
+    "recovery_prompt": "Network request timed out. Try: (1) increase the timeout value, (2) check network connectivity, (3) retry with exponential backoff, (4) check for server overload, (5) reduce request payload size.",
+    "success_rate": 0.7,
+    "tags": [
+      "network",
+      "timeout"
+    ]
+  },
+  {
+    "error_type": "network_error",
+    "error_message": "connection reset by peer",
+    "pattern": "connection reset|ECONNRESET|broken pipe",
+    "recovery_prompt": "Connection was reset by the remote peer. Try: (1) retry with backoff, (2) check if the server has rate limiting, (3) verify keep-alive settings, (4) check for load balancer timeouts, (5) implement connection pooling.",
+    "success_rate": 0.68,
+    "tags": [
+      "network",
+      "connection"
+    ]
+  },
+  {
+    "error_type": "import_error",
+    "error_message": "ModuleNotFoundError",
+    "pattern": "ModuleNotFoundError|No module named",
+    "recovery_prompt": "A required Python module is missing. Try: (1) install it with 'pip install <module>', (2) check the module name spelling, (3) verify you're in the correct virtual environment, (4) check PYTHONPATH, (5) try 'pip install -r requirements.txt'.",
+    "success_rate": 0.88,
+    "tags": [
+      "import",
+      "python"
+    ]
+  },
+  {
+    "error_type": "import_error",
+    "error_message": "ImportError cannot import name",
+    "pattern": "ImportError|cannot import name|cannot import",
+    "recovery_prompt": "Cannot import a name from a module. Try: (1) check if the name exists in the module's __all__, (2) the module version may differ—check with pip show, (3) look for API changes, (4) try importing the module directly.",
+    "success_rate": 0.78,
+    "tags": [
+      "import",
+      "python"
+    ]
+  },
+  {
+    "error_type": "import_error",
+    "error_message": "circular import",
+    "pattern": "circular import|circular dependency|import cycle",
+    "recovery_prompt": "Circular import detected. Try: (1) move the shared code to a separate module, (2) use lazy imports (import inside function), (3) restructure module boundaries, (4) use TYPE_CHECKING for type hints.",
+    "success_rate": 0.7,
+    "tags": [
+      "import",
+      "python",
+      "circular"
+    ]
+  },
+  {
+    "error_type": "import_error",
+    "error_message": "shared library not found",
+    "pattern": "shared object|\\.so[:\\.]|cannot open shared object file|Library not loaded",
+    "recovery_prompt": "A native shared library dependency is missing. Try: (1) install the system package (apt/brew), (2) set LD_LIBRARY_PATH, (3) reinstall the Python package, (4) check for version compatibility.",
+    "success_rate": 0.65,
+    "tags": [
+      "import",
+      "native"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "TypeError unsupported operand",
+    "pattern": "TypeError.*unsupported operand|cannot.*concat|cannot.*add|cannot.*subtract",
+    "recovery_prompt": "Type mismatch in operation. Try: (1) check types of operands, (2) add explicit type conversion (str(), int(), float()), (3) handle None cases, (4) add type checking/assertions, (5) check for mixed types in collections.",
+    "success_rate": 0.8,
+    "tags": [
+      "type",
+      "operation"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "AttributeError object has no attribute",
+    "pattern": "AttributeError|has no attribute|'NoneType' object",
+    "recovery_prompt": "Object missing expected attribute. Try: (1) check if the object is None, (2) verify the object type, (3) use hasattr() or getattr() with defaults, (4) check for typos in attribute names, (5) check class initialization.",
+    "success_rate": 0.82,
+    "tags": [
+      "type",
+      "attribute"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "KeyError key not found",
+    "pattern": "KeyError|key not found|key.*not in",
+    "recovery_prompt": "Dictionary key not found. Try: (1) use dict.get(key, default) instead of dict[key], (2) check the key name (typos, case sensitivity), (3) verify the data structure matches expectations, (4) add key existence checks.",
+    "success_rate": 0.85,
+    "tags": [
+      "type",
+      "dict"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "IndexError list index out of range",
+    "pattern": "IndexError|index out of range",
+    "recovery_prompt": "List index is out of range. Try: (1) check list length before indexing, (2) use try/except IndexError, (3) verify loop bounds, (4) check for off-by-one errors, (5) use slicing for safe access.",
+    "success_rate": 0.83,
+    "tags": [
+      "type",
+      "index"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "ValueError invalid literal",
+    "pattern": "ValueError|invalid literal|could not convert",
+    "recovery_prompt": "Value conversion error. Try: (1) validate input before conversion, (2) use try/except around int()/float(), (3) strip whitespace from input, (4) handle empty strings, (5) add input validation.",
+    "success_rate": 0.78,
+    "tags": [
+      "type",
+      "value"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "unexpected keyword argument",
+    "pattern": "unexpected keyword argument|unexpected keyword",
+    "recovery_prompt": "Function received an unexpected keyword argument. Try: (1) check the function signature, (2) look for API changes, (3) check for typos in argument names, (4) verify the function version matches documentation.",
+    "success_rate": 0.82,
+    "tags": [
+      "type",
+      "arguments"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "missing positional argument",
+    "pattern": "missing.*argument|missing.*parameter|takes.*positional argument",
+    "recovery_prompt": "Function call is missing required arguments. Try: (1) check the function signature, (2) verify all positional args are provided, (3) check for API changes, (4) use keyword arguments for clarity.",
+    "success_rate": 0.85,
+    "tags": [
+      "type",
+      "arguments"
+    ]
+  },
+  {
+    "error_type": "type_error",
+    "error_message": "too many values to unpack",
+    "pattern": "too many values to unpack|not enough values to unpack|unpack",
+    "recovery_prompt": "Unpacking mismatch. Try: (1) check the number of variables vs iterable length, (2) use *args to capture extra values, (3) verify the data structure shape, (4) use .items() for dict unpacking.",
+    "success_rate": 0.8,
+    "tags": [
+      "type",
+      "unpacking"
+    ]
+  },
+  {
+    "error_type": "unknown",
+    "error_message": "unexpected error",
+    "pattern": "unexpected error|unknown error|unexpected exception",
+    "recovery_prompt": "An unexpected error occurred. Try: (1) read the full error message and traceback, (2) check recent changes, (3) add logging for debugging, (4) isolate the failing code, (5) search for the error message online.",
+    "success_rate": 0.45,
+    "tags": [
+      "general"
+    ]
+  },
+  {
+    "error_type": "unknown",
+    "error_message": "runtime error",
+    "pattern": "RuntimeError|runtime error",
+    "recovery_prompt": "A runtime error occurred. Try: (1) read the full error message, (2) check for resource exhaustion, (3) verify environment configuration, (4) check for race conditions, (5) add error handling around the failing code.",
+    "success_rate": 0.5,
+    "tags": [
+      "general"
+    ]
+  },
+  {
+    "error_type": "unknown",
+    "error_message": "not implemented error",
+    "pattern": "NotImplementedError|not implemented",
+    "recovery_prompt": "Feature not implemented. Try: (1) implement the missing method/function, (2) use an alternative approach, (3) check for a library that provides this feature, (4) file an issue if it's expected to work.",
+    "success_rate": 0.55,
+    "tags": [
+      "general"
+    ]
+  },
+  {
+    "error_type": "unknown",
+    "error_message": "memory error",
+    "pattern": "MemoryError|out of memory|memory.*exceeded",
+    "recovery_prompt": "Out of memory. Try: (1) process data in smaller batches, (2) use streaming instead of loading all data, (3) close unused resources, (4) add garbage collection hints, (5) increase available memory or use a machine with more RAM.",
+    "success_rate": 0.6,
+    "tags": [
+      "general",
+      "memory"
+    ]
+  },
+  {
+    "error_type": "unknown",
+    "error_message": "recursion depth exceeded",
+    "pattern": "RecursionError|maximum recursion depth|stack overflow",
+    "recovery_prompt": "Maximum recursion depth exceeded. Try: (1) convert to iterative approach, (2) increase sys.setrecursionlimit() if legitimate, (3) check for infinite recursion bugs, (4) use tail recursion optimization.",
+    "success_rate": 0.7,
+    "tags": [
+      "general",
+      "recursion"
+    ]
+  },
+  {
+    "error_type": "unknown",
+    "error_message": "keyboard interrupt",
+    "pattern": "KeyboardInterrupt|interrupted",
+    "recovery_prompt": "Process was interrupted. Try: (1) add signal handling for graceful shutdown, (2) save state periodically for resume capability, (3) use checkpointing for long-running tasks, (4) clean up resources in finally blocks.",
+    "success_rate": 0.4,
+    "tags": [
+      "general",
+      "interrupt"
+    ]
+  }
+]

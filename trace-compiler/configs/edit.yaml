@@ -1,0 +1,35 @@
+# Edit skill training configuration
+skill_type: edit
+
+training:
+  model_name: Qwen/Qwen2.5-Coder-1.5B
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  learning_rate: 2.0e-4
+  num_epochs: 3
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  max_seq_length: 4096
+  warmup_steps: 10
+  weight_decay: 0.01
+  logging_steps: 10
+  save_steps: 100
+
+system_prompt: |
+  You are an expert code editor. Given a task and existing code,
+  make precise, minimal edits that accomplish the goal while
+  preserving existing behavior and style.
+
+extraction:
+  min_confidence: 0.5
+  detection_keywords:
+    - edit
+    - replace
+    - modify
+    - update
+    - change
+    - insert
+    - delete
+    - refactor
+    - rewrite

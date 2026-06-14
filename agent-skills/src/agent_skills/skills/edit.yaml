@@ -1,0 +1,18 @@
+name: edit
+version: "1.0.0"
+description: "Make targeted edits to code files — precise string replacements, file creation"
+category: "core"
+tools:
+  - edit
+  - write
+triggers:
+  - "change this"
+  - "update the"
+  - "rename"
+  - "refactor"
+  - "modify"
+author: "agentskills"
+license: "MIT"
+tags:
+  - editing
+  - code-modification

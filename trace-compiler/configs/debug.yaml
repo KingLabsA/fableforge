@@ -1,0 +1,36 @@
+# Debug skill training configuration
+skill_type: debug
+
+training:
+  model_name: Qwen/Qwen2.5-Coder-1.5B
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  learning_rate: 2.0e-4
+  num_epochs: 3
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  max_seq_length: 4096
+  warmup_steps: 10
+  weight_decay: 0.01
+  logging_steps: 10
+  save_steps: 100
+
+system_prompt: |
+  You are an expert debugging assistant. When presented with an error,
+  traceback, or failing behavior, analyze the root cause and provide
+  a targeted fix with explanation.
+
+extraction:
+  min_confidence: 0.5
+  detection_keywords:
+    - error
+    - exception
+    - traceback
+    - bug
+    - debug
+    - fix
+    - stack trace
+    - runtimeerror
+    - typeerror
+    - valueerror

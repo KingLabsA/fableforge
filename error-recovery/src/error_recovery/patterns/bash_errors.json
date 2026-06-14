@@ -1,0 +1,635 @@
+[
+  {
+    "error_type": "bash_error",
+    "error_message": "command not found",
+    "pattern": "command not found",
+    "recovery_prompt": "Check if the command is installed. Try: 'which <command>' or install it with the appropriate package manager. Verify the command name spelling and check your PATH.",
+    "success_rate": 0.82,
+    "tags": [
+      "bash",
+      "command"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "no such file or directory",
+    "pattern": "no such file or directory",
+    "recovery_prompt": "Verify the file path exists. Use 'ls' to check the directory. Check for typos in the path, and ensure you're in the correct working directory with 'pwd'.",
+    "success_rate": 0.85,
+    "tags": [
+      "bash",
+      "filesystem"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "permission denied",
+    "pattern": "permission denied",
+    "recovery_prompt": "Check file permissions with 'ls -la'. Try adding execute permission with 'chmod +x' or run with appropriate privileges. Verify ownership with 'stat'.",
+    "success_rate": 0.78,
+    "tags": [
+      "bash",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "exit code 1",
+    "pattern": "exit code 1",
+    "recovery_prompt": "The command ran but returned a failure exit code. Check stderr output for details. Run the command with increased verbosity (--verbose, -v, --debug) to get more information.",
+    "success_rate": 0.65,
+    "tags": [
+      "bash",
+      "exit-code"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "exit code 127",
+    "pattern": "exit code 127",
+    "recovery_prompt": "Exit code 127 means the command was not found. Verify the command name, check if it's installed, and ensure it's in your PATH. Try 'which <command>' to locate it.",
+    "success_rate": 0.88,
+    "tags": [
+      "bash",
+      "exit-code"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "exit code 126",
+    "pattern": "exit code 126",
+    "recovery_prompt": "Exit code 126 means the command was found but is not executable. Add execute permission with 'chmod +x <file>', or check if the file has the correct shebang line.",
+    "success_rate": 0.85,
+    "tags": [
+      "bash",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "segmentation fault",
+    "pattern": "segmentation fault|segfault|SIGSEGV",
+    "recovery_prompt": "A segmentation fault indicates a memory access violation. This is usually a bug in the program. Try: (1) run with a different input, (2) check for known bugs, (3) try a different version, (4) run under gdb/lldb for debugging.",
+    "success_rate": 0.35,
+    "tags": [
+      "bash",
+      "crash"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "out of memory",
+    "pattern": "out of memory|oom|cannot allocate",
+    "recovery_prompt": "The process ran out of memory. Try: (1) reduce input data size, (2) close other processes, (3) increase swap space, (4) use a machine with more RAM, (5) process data in smaller batches.",
+    "success_rate": 0.72,
+    "tags": [
+      "bash",
+      "memory"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "broken pipe",
+    "pattern": "broken pipe",
+    "recovery_prompt": "Broken pipe means the receiving process closed the connection. This often happens with piping to 'head' or similar. Try: (1) ensure the receiving process is running, (2) buffer the output, (3) redirect to a file first.",
+    "success_rate": 0.8,
+    "tags": [
+      "bash",
+      "pipe"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "address already in use",
+    "pattern": "address already in use|EADDRINUSE",
+    "recovery_prompt": "A process is already using that port. Try: (1) 'lsof -i :<port>' or 'netstat -tlnp' to find the process, (2) kill the existing process, (3) use a different port, (4) set SO_REUSEADDR in your code.",
+    "success_rate": 0.9,
+    "tags": [
+      "bash",
+      "network"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "no space left on device",
+    "pattern": "no space left on device",
+    "recovery_prompt": "Disk is full. Try: (1) 'df -h' to check space, (2) 'du -sh * | sort -rh | head' to find large files, (3) clean up with 'rm' or 'docker system prune', (4) check /tmp and cache directories.",
+    "success_rate": 0.75,
+    "tags": [
+      "bash",
+      "disk"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "operation not permitted",
+    "pattern": "operation not permitted|EPERM",
+    "recovery_prompt": "The operation requires elevated privileges. Try: (1) run with sudo if appropriate, (2) check file permissions, (3) verify you own the resource, (4) check if the filesystem is mounted read-only.",
+    "success_rate": 0.7,
+    "tags": [
+      "bash",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "read-only file system",
+    "pattern": "read-only file system",
+    "recovery_prompt": "The filesystem is mounted read-only. Try: (1) remount as read-write 'mount -o remount,rw <device>', (2) check if it's a disk error forcing read-only mode, (3) use a different filesystem for writes.",
+    "success_rate": 0.55,
+    "tags": [
+      "bash",
+      "filesystem"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "device or resource busy",
+    "pattern": "device or resource busy|EBUSY",
+    "recovery_prompt": "The resource is in use by another process. Try: (1) 'fuser' or 'lsof' to find the process using it, (2) kill the process, (3) unmount the resource first, (4) wait and retry.",
+    "success_rate": 0.7,
+    "tags": [
+      "bash",
+      "resource"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "cannot execute binary file",
+    "pattern": "cannot execute binary file|exec format error",
+    "recovery_prompt": "The binary file format doesn't match your platform. Try: (1) check if it's the right architecture (x86 vs ARM), (2) verify the file is not corrupted, (3) check the shebang line for scripts, (4) try 'file <binary>' to inspect it.",
+    "success_rate": 0.6,
+    "tags": [
+      "bash",
+      "binary"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "is not executable",
+    "pattern": "is not executable|not executable",
+    "recovery_prompt": "The file lacks execute permission. Add it with 'chmod +x <file>'. Also verify the shebang line (#!/bin/bash, #!/usr/bin/env python3, etc.) is correct.",
+    "success_rate": 0.92,
+    "tags": [
+      "bash",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "bash syntax error",
+    "pattern": "bash[:\\s].*syntax error|unexpected token|unexpected end of file",
+    "recovery_prompt": "A bash syntax error occurred. Check for: (1) missing quotes or brackets, (2) unescaped special characters, (3) missing 'fi', 'done', 'esac' closures, (4) incorrect variable expansion syntax.",
+    "success_rate": 0.75,
+    "tags": [
+      "bash",
+      "syntax"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "npm command not found",
+    "pattern": "npm.*not found|npx.*not found",
+    "recovery_prompt": "Node.js/npm is not installed or not in PATH. Install with: 'curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - && sudo apt install -y nodejs' or use nvm.",
+    "success_rate": 0.88,
+    "tags": [
+      "bash",
+      "nodejs"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "python command not found",
+    "pattern": "python[23]?[:\\s].*not found|python[:\\s].*command not found",
+    "recovery_prompt": "Python is not installed or the command alias is wrong. Try: (1) use 'python3' instead of 'python', (2) install Python via pyenv or system package manager, (3) create a virtual environment.",
+    "success_rate": 0.9,
+    "tags": [
+      "bash",
+      "python"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "docker command not found",
+    "pattern": "docker[:\\s].*not found|docker[:\\s].*command not found",
+    "recovery_prompt": "Docker is not installed. Install with the official script: 'curl -fsSL https://get.docker.com | sh'. Then add your user to the docker group: 'sudo usermod -aG docker $USER'.",
+    "success_rate": 0.85,
+    "tags": [
+      "bash",
+      "docker"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "git command not found",
+    "pattern": "git[:\\s].*not found|git[:\\s].*command not found",
+    "recovery_prompt": "Git is not installed. Install it: Ubuntu/Debian: 'sudo apt install git', macOS: 'brew install git', or check your PATH.",
+    "success_rate": 0.92,
+    "tags": [
+      "bash",
+      "git"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "npm install failed",
+    "pattern": "npm install.*failed|npm ERR!",
+    "recovery_prompt": "npm install failed. Try: (1) delete node_modules and package-lock.json, then reinstall, (2) clear npm cache: 'npm cache clean --force', (3) check for network issues, (4) try with '--legacy-peer-deps'.",
+    "success_rate": 0.72,
+    "tags": [
+      "bash",
+      "npm"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "pip install failed",
+    "pattern": "pip install.*failed|pip.*error",
+    "recovery_prompt": "pip install failed. Try: (1) upgrade pip: 'pip install --upgrade pip', (2) install build dependencies, (3) use a virtual environment, (4) try '--no-cache-dir', (5) check Python version compatibility.",
+    "success_rate": 0.7,
+    "tags": [
+      "bash",
+      "pip"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "make command not found",
+    "pattern": "make[:\\s].*not found|make[:\\s].*command not found",
+    "recovery_prompt": "Make is not installed. Install build essentials: Ubuntu: 'sudo apt install build-essential', macOS: 'xcode-select --install'.",
+    "success_rate": 0.9,
+    "tags": [
+      "bash",
+      "build"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "versus conflict in git",
+    "pattern": "CONFLICT|merge conflict",
+    "recovery_prompt": "Git merge conflict. Try: (1) 'git status' to see conflicted files, (2) manually resolve conflicts in each file, (3) 'git add' resolved files, (4) 'git commit' to complete the merge. Or abort with 'git merge --abort'.",
+    "success_rate": 0.65,
+    "tags": [
+      "bash",
+      "git"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "sudo a password is required",
+    "pattern": "sudo.*password is required|a password is required",
+    "recovery_prompt": "The command requires sudo and a password. Either: (1) provide the password, (2) configure passwordless sudo in visudo, (3) find an alternative command that doesn't require sudo.",
+    "success_rate": 0.55,
+    "tags": [
+      "bash",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "process killed",
+    "pattern": "killed|SIGKILL|signal 9",
+    "recovery_prompt": "The process was killed, likely due to OOM (out of memory). Try: (1) reduce memory usage, (2) process data in smaller chunks, (3) increase available memory, (4) check 'dmesg' for OOM-killer messages.",
+    "success_rate": 0.6,
+    "tags": [
+      "bash",
+      "memory"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "connection refused",
+    "pattern": "connection refused|ECONNREFUSED",
+    "recovery_prompt": "Connection refused means no service is listening on that port. Try: (1) verify the service is running: 'ss -tlnp | grep <port>', (2) start the service, (3) check firewall rules, (4) verify the host and port are correct.",
+    "success_rate": 0.85,
+    "tags": [
+      "bash",
+      "network"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "connection timed out",
+    "pattern": "connection timed out|ETIMEDOUT|timed? ?out",
+    "recovery_prompt": "Connection timed out. Try: (1) check network connectivity, (2) increase timeout, (3) try a different endpoint, (4) check if a firewall is blocking, (5) verify DNS resolution.",
+    "success_rate": 0.7,
+    "tags": [
+      "bash",
+      "network"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "SSL certificate error",
+    "pattern": "SSL|certificate.*error|certificate_verify_failed|self.signed",
+    "recovery_prompt": "SSL certificate verification failed. Try: (1) install the CA certificate, (2) update the cert bundle, (3) for development only: set REQUESTS_CA_BUNDLE or --insecure flag (never in production).",
+    "success_rate": 0.65,
+    "tags": [
+      "bash",
+      "ssl"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "command line too long",
+    "pattern": "argument list too long|command line too long",
+    "recovery_prompt": "The command line exceeds the OS limit. Try: (1) use 'xargs' to batch arguments, (2) use 'find -exec', (3) pipe file lists, (4) use a script file instead of inline commands.",
+    "success_rate": 0.82,
+    "tags": [
+      "bash",
+      "limits"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "too many open files",
+    "pattern": "too many open files|EMFILE",
+    "recovery_prompt": "Too many open file descriptors. Try: (1) increase ulimit: 'ulimit -n 65536', (2) close unnecessary files, (3) check for file descriptor leaks, (4) use connection pooling.",
+    "success_rate": 0.73,
+    "tags": [
+      "bash",
+      "limits"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "resource temporarily unavailable",
+    "pattern": "resource temporarily unavailable|EAGAIN|EWOULDBLOCK",
+    "recovery_prompt": "Resource temporarily unavailable. Try: (1) retry after a short delay, (2) increase system limits, (3) check for resource exhaustion, (4) use non-blocking I/O with backoff.",
+    "success_rate": 0.68,
+    "tags": [
+      "bash",
+      "resource"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "cannot stat file",
+    "pattern": "cannot stat|stat.*failed",
+    "recovery_prompt": "The file or directory doesn't exist at that path. Verify the path with 'ls', check for typos, ensure you're in the right directory, and handle spaces in filenames properly.",
+    "success_rate": 0.88,
+    "tags": [
+      "bash",
+      "filesystem"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "ambiguous redirect",
+    "pattern": "ambiguous redirect",
+    "recovery_prompt": "Bash ambiguous redirect error. Check for: (1) unquoted variable expansions, (2) glob patterns that match multiple files, (3) missing file descriptor, (4) use quotes around variable references in redirects.",
+    "success_rate": 0.78,
+    "tags": [
+      "bash",
+      "syntax"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "text file busy",
+    "pattern": "text file busy",
+    "recovery_prompt": "The file is being modified while another process reads it. Try: (1) write to a temp file first, then move atomically with 'mv', (2) wait for the writing process to finish, (3) use lock files.",
+    "success_rate": 0.7,
+    "tags": [
+      "bash",
+      "resource"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "core dumped",
+    "pattern": "core dumped|core dumped",
+    "recovery_prompt": "A core dump indicates a crash. Try: (1) analyze the core file with gdb: 'gdb <binary> <core>', (2) check if the program has a known bug, (3) try a different version, (4) enable more logging.",
+    "success_rate": 0.4,
+    "tags": [
+      "bash",
+      "crash"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "shell session or terminal not found",
+    "pattern": "not a tty|no controlling tty|inherits not a tty",
+    "recovery_prompt": "No TTY available for interactive commands. Try: (1) use non-interactive flags (-q, --no-input, --batch), (2) pipe input via stdin, (3) use 'script' command, (4) set TERM=dumb.",
+    "success_rate": 0.72,
+    "tags": [
+      "bash",
+      "terminal"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "interpreter bad",
+    "pattern": "bad interpreter|no such interpreter",
+    "recovery_prompt": "Bad interpreter usually means the shebang line points to a non-existent interpreter. Check the shebang line (#!/...) and ensure the interpreter path exists. Use '#!/usr/bin/env <lang>' for portability.",
+    "success_rate": 0.85,
+    "tags": [
+      "bash",
+      "interpreter"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "npm ERR! network",
+    "pattern": "npm ERR!.*network|npm ERR!.*timeout",
+    "recovery_prompt": "npm network error. Try: (1) check internet connectivity, (2) clear npm cache: 'npm cache clean --force', (3) switch to a different registry, (4) set HTTP_PROXY, (5) increase timeout in .npmrc.",
+    "success_rate": 0.65,
+    "tags": [
+      "bash",
+      "npm",
+      "network"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "ENOENT no such file",
+    "pattern": "ENOENT.*no such file",
+    "recovery_prompt": "Node.js ENOENT error. The file or directory does not exist. Try: (1) verify the path, (2) create parent directories first, (3) check working directory, (4) use path.resolve() for absolute paths.",
+    "success_rate": 0.87,
+    "tags": [
+      "bash",
+      "nodejs"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "EACCES permission denied",
+    "pattern": "EACCES|EACCES permission denied",
+    "recovery_prompt": "Node.js EACCES permission error. Try: (1) change file/dir ownership, (2) modify permissions with chmod, (3) avoid running as root, (4) use npm config set prefix ~/.npm-global for global installs.",
+    "success_rate": 0.8,
+    "tags": [
+      "bash",
+      "nodejs",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "pip warning not on PATH",
+    "pattern": "pip.*WARNING.*not on PATH|not on PATH",
+    "recovery_prompt": "The installed package's scripts directory is not in PATH. Add it: 'export PATH=\"$HOME/.local/bin:$PATH\"' or install with '--user' flag and add the path to your shell profile.",
+    "success_rate": 0.85,
+    "tags": [
+      "bash",
+      "pip",
+      "path"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "docker permission denied",
+    "pattern": "docker.*permission denied|Got permission denied while trying to connect",
+    "recovery_prompt": "Docker permission denied. Add your user to the docker group: 'sudo usermod -aG docker $USER', then log out and back in. Or use 'sudo docker' temporarily.",
+    "success_rate": 0.9,
+    "tags": [
+      "bash",
+      "docker",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "syntax error near unexpected token",
+    "pattern": "syntax error near unexpected token",
+    "recovery_prompt": "Bash syntax error. Check for: (1) mismatched quotes (' vs \"), (2) missing semicolons or newlines, (3) unescaped special characters, (4) copy-paste issues with smart quotes. Use shellcheck to lint.",
+    "success_rate": 0.75,
+    "tags": [
+      "bash",
+      "syntax"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "gpg no default key",
+    "pattern": "gpg.*no default key|gpg.*failed to start",
+    "recovery_prompt": "GPG key error. Try: (1) create a key: 'gpg --gen-key', (2) or import existing key, (3) set GPG_TTY: 'export GPG_TTY=$(tty)', (4) use passphrase-less key for CI.",
+    "success_rate": 0.7,
+    "tags": [
+      "bash",
+      "gpg"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "unable to lock the administration directory",
+    "pattern": "unable to lock|dpkglock|another process is using",
+    "recovery_prompt": "Another package manager process is running. Try: (1) wait for it to finish, (2) 'sudo rm /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock', (3) 'sudo dpkg --configure -a', (4) never force this on production systems.",
+    "success_rate": 0.8,
+    "tags": [
+      "bash",
+      "dpkg"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "unreadable variable",
+    "pattern": "unbind|unset|readonly variable",
+    "recovery_prompt": "Shell variable error. The variable may be readonly or unset. Try: (1) use a different variable name, (2) check if it's exported correctly, (3) use ${var:-default} for safe defaults.",
+    "success_rate": 0.72,
+    "tags": [
+      "bash",
+      "variable"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "curl error exit code 6",
+    "pattern": "curl.*\\(6\\)",
+    "recovery_prompt": "curl error 6: Couldn't resolve host. DNS resolution failed. Try: (1) verify the URL is correct, (2) check DNS: 'nslookup <host>', (3) try a different DNS server, (4) check /etc/hosts.",
+    "success_rate": 0.82,
+    "tags": [
+      "bash",
+      "network",
+      "dns"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "curl error exit code 7",
+    "pattern": "curl.*\\(7\\)",
+    "recovery_prompt": "curl error 7: Failed to connect. The server rejected the connection. Try: (1) verify the host and port, (2) check if the service is running, (3) check firewall rules, (4) try 'telnet <host> <port>'.",
+    "success_rate": 0.8,
+    "tags": [
+      "bash",
+      "network"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "curl error exit code 35",
+    "pattern": "curl.*\\(35\\)",
+    "recovery_prompt": "curl error 35: SSL connect error. Try: (1) update CA certificates, (2) check TLS version compatibility, (3) try --tlsv1.2 flag, (4) check for cipher mismatch.",
+    "success_rate": 0.65,
+    "tags": [
+      "bash",
+      "ssl"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "npm ERR! code ERESOLVE",
+    "pattern": "npm ERR!.*ERESOLVE|ERESOLVE could not resolve",
+    "recovery_prompt": "npm dependency resolution conflict. Try: (1) 'npm install --legacy-peer-deps', (2) update package.json to match peer dependency versions, (3) 'rm -rf node_modules package-lock.json && npm install', (4) check for incompatible package versions.",
+    "success_rate": 0.75,
+    "tags": [
+      "bash",
+      "npm",
+      "dependencies"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "cannot delete directory not empty",
+    "pattern": "Directory not empty|cannot remove.*not empty",
+    "recovery_prompt": "Cannot remove a non-empty directory. Try: (1) 'rm -rf <dir>' to force remove, (2) check contents first with 'ls -la <dir>', (3) remove files inside first then remove the directory.",
+    "success_rate": 0.9,
+    "tags": [
+      "bash",
+      "filesystem"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "wget command not found",
+    "pattern": "wget.*not found|wget.*command not found",
+    "recovery_prompt": "wget is not installed. Install it: Ubuntu/Debian: 'sudo apt install wget', macOS: 'brew install wget', or use 'curl -O' as an alternative.",
+    "success_rate": 0.92,
+    "tags": [
+      "bash",
+      "wget"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "port already in use",
+    "pattern": "port.*already in use|already in use.*port",
+    "recovery_prompt": "Port is already in use. Find the process: 'lsof -i :<port>' or 'ss -tlnp | grep <port>'. Kill it: 'kill <PID>'. Or use a different port.",
+    "success_rate": 0.88,
+    "tags": [
+      "bash",
+      "network"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "disk quota exceeded",
+    "pattern": "disk quota exceeded|over quota",
+    "recovery_prompt": "Disk quota exceeded. Try: (1) check your quota with 'quota -s', (2) delete unnecessary files, (3) compress large files, (4) request a quota increase from your admin.",
+    "success_rate": 0.65,
+    "tags": [
+      "bash",
+      "disk"
+    ]
+  },
+  {
+    "error_type": "bash_error",
+    "error_message": "process already running",
+    "pattern": "already running|pid file exists|is already running",
+    "recovery_prompt": "The process is already running. Try: (1) check with 'ps aux | grep <process>', (2) remove stale PID file if process is not actually running, (3) kill the existing process, (4) use --force flag if supported.",
+    "success_rate": 0.8,
+    "tags": [
+      "bash",
+      "process"
+    ]
+  }
+]

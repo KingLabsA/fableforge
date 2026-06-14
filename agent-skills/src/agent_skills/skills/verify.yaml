@@ -1,0 +1,19 @@
+name: verify
+version: "1.0.0"
+description: "Run tests, check types, and verify code correctness after changes"
+category: "core"
+tools:
+  - bash
+  - read
+  - grep
+triggers:
+  - "run the tests"
+  - "verify this works"
+  - "check if it passes"
+  - "lint the code"
+author: "agentskills"
+license: "MIT"
+tags:
+  - testing
+  - verification
+  - quality

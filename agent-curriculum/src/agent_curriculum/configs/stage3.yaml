@@ -1,0 +1,9 @@
+stage_id: 3
+name: advanced
+description: "Advanced tasks — complex multi-step with error recovery"
+difficulty_range: [0.4, 0.6]
+num_traces: 0
+learning_rate: 5.0e-05
+batch_size: 4
+num_epochs: 2
+lora_r: 32

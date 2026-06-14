@@ -1,0 +1,164 @@
+name: Model Training Issue
+description: Report problems with model training, fine-tuning, or evaluation
+title: "[TRAINING] "
+labels: ["training", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## FableForge Model Training Issue
+
+        Use this template for any issues related to training, fine-tuning, or evaluating
+        FableForge models (FableForge-14B, ShellWhisperer, ReasonCritic, etc.).
+
+        **Before opening**, please:
+        - Check the [training documentation](https://fableforge.readthedocs.io/en/latest/training/)
+        - Review [known training issues](../../issues?q=label%3Atraining)
+        - Verify your hardware meets the minimum requirements for your training stage
+
+  - type: dropdown
+    id: model
+    attributes:
+      label: Model
+      description: Which model were you training?
+      options:
+        - FableForge-14B (base model)
+        - FableForge-14B-Instruct
+        - ShellWhisperer
+        - ShellWhisperer-Lite
+        - ReasonCritic
+        - ReasonCritic-Lite
+        - CodeDistiller-7B
+        - SkillDistiller-7B
+        - Custom (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: training-stage
+    attributes:
+      label: Training Stage
+      description: At which stage of training did you encounter the issue?
+      options:
+        - behavior_shaping (SFT / instruction following)
+        - skill_distillation (skill extraction & transfer)
+        - error_recovery (error recovery training)
+        - DPO (Direct Preference Optimization)
+        - RLHF (Reinforcement Learning from Human Feedback)
+        - continued_pretraining (domain-adaptive continued pretraining)
+        - merge (model merging / task vector combination)
+        - evaluation (benchmarking / eval suite)
+        - quantization (GGUF / GPTQ / AWQ conversion)
+        - dataset_preparation (data curation / cleaning)
+        - Other (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: hardware
+    attributes:
+      label: Hardware
+      description: What hardware are you training on?
+      options:
+        - Google Colab (T4 16GB)
+        - Google Colab (A100 40GB)
+        - Google Colab (A100 80GB)
+        - NVIDIA RTX 3090 (24GB)
+        - NVIDIA RTX 4090 (24GB)
+        - NVIDIA A100 (40GB)
+        - NVIDIA A100 (80GB)
+        - NVIDIA H100 (80GB)
+        - Multi-GPU (2x A100 80GB)
+        - Multi-GPU (4x A100 80GB)
+        - Multi-GPU (8x A100 80GB)
+        - Apple M1 Mac (unified memory)
+        - Apple M2 Mac (unified memory)
+        - Apple M3 Mac (unified memory)
+        - Apple M4 Mac (unified memory)
+        - Other (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: training-config
+    attributes:
+      label: Training Configuration
+      description: |
+        Paste your training configuration. This could be your `train.yaml`, `accelerate`
+        config, or the command you used to launch training. Remove any sensitive info.
+      placeholder: |
+        # train.yaml
+        model_name: FableForge-14B
+        stage: behavior_shaping
+        dataset: fableforge/sft-behavior-v3
+        learning_rate: 2e-5
+        batch_size: 4
+        gradient_accumulation_steps: 8
+        max_seq_length: 4096
+        num_epochs: 3
+        warmup_steps: 100
+        lora_rank: 64
+        lora_alpha: 128
+        lora_dropout: 0.05
+        optimizer: adamw_bnb_8bit
+        precision: bf16
+
+        # Command:
+        accelerate launch train.py --config train.yaml
+      render: yaml
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-output
+    attributes:
+      label: Error Output
+      description: |
+        Paste the full error output, traceback, or unexpected behavior description.
+        Include at least the last 50 lines of the training log.
+      placeholder: |
+        Traceback (most recent call last):
+          File "train.py", line 142, in <module>
+            trainer.train()
+          File "/opt/conda/lib/python3.11/site-packages/transformers/trainer.py", line 1642, in train
+            return inner_training_loop(
+          File "/opt/conda/lib/python3.11/site-packages/transformers/trainer.py", line 1798, in _inner_training_loop
+            tr_loss_step = self.training_step(model, inputs)
+          File "/opt/conda/lib/python3.11/site-packages/transformers/trainer.py", line 2647, in training_step
+            raise ValueError("Training loss is NaN")
+        ValueError: Training loss is NaN
+
+        Last training metrics:
+        Step 340: loss=NaN, learning_rate=1.92e-05, epoch=1.27
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: dataset-size
+    attributes:
+      label: Dataset Size
+      description: How many examples/samples are in your training dataset?
+      placeholder: "e.g., 15,000 examples, 500MB JSONL, 2.1M tokens"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: |
+        Any other information that could help diagnose the training issue:
+        - Were you using LoRA/QLoRA or full fine-tuning?
+        - Did this work before a certain version change?
+        - Have you tried different hyperparameters?
+        - Links to relevant discussions or threads
+      placeholder: |
+        - Using QLoRA with 4-bit quantization via bitsandbytes
+        - Loss went to NaN after about 340 steps
+        - Tried reducing learning rate to 1e-5 but same issue
+        - Dataset was cleaned and deduplicated
+        - Related to discussion #256
+    validations:
+      required: false

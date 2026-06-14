@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "fableforge"
+version = "0.1.0"
+description = "Unified CLI for the FableForge agent ecosystem. 21 projects, one command."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "FableForge", email = "team@fableforge.ai"}]
+
+dependencies = [
+    "rich>=13.0",
+    "click>=8.1",
+]
+
+[project.scripts]
+ff = "fableforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

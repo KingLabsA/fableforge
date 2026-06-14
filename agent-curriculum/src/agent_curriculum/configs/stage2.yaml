@@ -1,0 +1,9 @@
+stage_id: 2
+name: intermediate
+description: "Intermediate tasks — multi-tool sequences with simple error recovery"
+difficulty_range: [0.2, 0.4]
+num_traces: 0
+learning_rate: 0.0001
+batch_size: 4
+num_epochs: 2
+lora_r: 64

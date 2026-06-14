@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shell-whisperer"
+version = "0.1.0"
+description = "1.5B edge-native shell agent — natural language to shell commands, 50ms latency on phone/edge"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "FableForge Team"},
+]
+keywords = ["shell", "nlp", "edge", "onnx", "llm", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Shells",
+]
+dependencies = [
+    "rich>=13.0",
+    "click>=8.1",
+    "pydantic>=2.0",
+    "httpx>=0.25",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "websockets>=12.0",
+]
+
+[project.optional-dependencies]
+train = [
+    "torch>=2.1.0",
+    "transformers>=4.40.0",
+    "peft>=0.10.0",
+    "datasets>=2.18.0",
+    "unsloth>=2024.1",
+    "accelerate>=0.27.0",
+    "trl>=0.8.0",
+    "wandb>=0.16.0",
+]
+gpu = [
+    "bitsandbytes>=0.43.0",
+    "xformers>=0.0.23",
+]
+export = [
+    "onnx>=1.16.0",
+    "onnxruntime>=1.17.0",
+    "optimum>=1.17.0",
+]
+gguf = [
+    "llama-cpp-python>=0.2.50",
+]
+all = ["shell-whisperer[train,gpu,export,gguf]"]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.3.0",
+    "mypy>=1.9.0",
+]
+
+[project.scripts]
+sw = "shell_whisperer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true

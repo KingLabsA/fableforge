@@ -1,0 +1,282 @@
+[
+  {
+    "id": "st-001",
+    "language": "python",
+    "description": "Missing type hints",
+    "bug_type": "missing_types",
+    "code": "def process(data, options):\n    result = []\n    for item in data:\n        if options.get('filter'):\n            result.append(item)\n    return result",
+    "expected_issues": [
+      "Missing type hints for parameters and return value"
+    ],
+    "suggestions": [
+      "Add def process(data: list[dict], options: dict) -> list[dict]"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-002",
+    "language": "python",
+    "description": "Magic numbers",
+    "bug_type": "magic_numbers",
+    "code": "if status == 3:\n    send_alert()\nelif status == 7:\n    escalate()",
+    "expected_issues": [
+      "Magic numbers 3 and 7 without named constants"
+    ],
+    "suggestions": [
+      "Define STATUS_ALERT = 3, STATUS_ESCALATE = 7"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-003",
+    "language": "python",
+    "description": "Too many nested levels",
+    "bug_type": "deep_nesting",
+    "code": "for user in users:\n    if user.active:\n        for order in user.orders:\n            if order.status == 'pending':\n                for item in order.items:\n                    if item.available:\n                        process(item)",
+    "expected_issues": [
+      "4 levels of nesting reduces readability"
+    ],
+    "suggestions": [
+      "Extract inner loops into separate functions"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-004",
+    "language": "python",
+    "description": "Variable name too short",
+    "bug_type": "naming",
+    "code": "def calc(a, b, c):\n    x = a * b + c\n    y = x * 2\n    return y",
+    "expected_issues": [
+      "Variable names a, b, c, x, y are not descriptive"
+    ],
+    "suggestions": [
+      "Use descriptive names like principal, rate, periods"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-005",
+    "language": "python",
+    "description": "Long function",
+    "bug_type": "long_function",
+    "code": "def process_order(order):\n    # 50+ lines of mixed validation, calculation, notification, and logging\n    if not order.items:\n        raise ValueError('Empty order')\n    total = 0\n    for item in order.items:\n        total += item.price * item.quantity\n    tax = total * 0.08\n    shipping = 5.99 if total < 50 else 0\n    grand_total = total + tax + shipping\n    # ... 40 more lines of payment, email, logging ...\n    return grand_total",
+    "expected_issues": [
+      "Function exceeds 20 lines, mixes concerns"
+    ],
+    "suggestions": [
+      "Split into validate_order, calculate_total, process_payment, send_notification"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-006",
+    "language": "python",
+    "description": "Missing docstring",
+    "bug_type": "missing_docs",
+    "code": "def transform(data, key, reverse=False):\n    result = sorted(data, key=lambda x: x[key], reverse=reverse)\n    return result",
+    "expected_issues": [
+      "No docstring explaining function purpose, parameters, or return value"
+    ],
+    "suggestions": [
+      "Add docstring with Args and Returns sections"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-007",
+    "language": "python",
+    "description": "Catch-all except",
+    "bug_type": "bare_except",
+    "code": "try:\n    process(data)\nexcept:\n    pass",
+    "expected_issues": [
+      "Bare except catches all exceptions including SystemExit and KeyboardInterrupt"
+    ],
+    "suggestions": [
+      "Catch specific exceptions, never bare except"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-008",
+    "language": "python",
+    "description": "Unused imports",
+    "bug_type": "unused_import",
+    "code": "import os\nimport sys\nimport json\nimport re\n\ndef process(data):\n    return json.dumps(data)",
+    "expected_issues": [
+      "os, sys, re are imported but never used"
+    ],
+    "suggestions": [
+      "Remove unused imports"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-009",
+    "language": "python",
+    "description": "Global mutable state",
+    "bug_type": "global_state",
+    "code": "cache = {}\nhit_count = 0\n\ndef get(key):\n    global hit_count\n    if key in cache:\n        hit_count += 1\n        return cache[key]\n    value = fetch(key)\n    cache[key] = value\n    return value",
+    "expected_issues": [
+      "Global mutable state makes testing and concurrency difficult"
+    ],
+    "suggestions": [
+      "Encapsulate in a Cache class with instance attributes"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-010",
+    "language": "python",
+    "description": "Inconsistent naming",
+    "bug_type": "inconsistent_naming",
+    "code": "def get_user_data(userID):\n    user_name = userID\n    return user_name",
+    "expected_issues": [
+      "Mixed naming conventions: userID (camelCase) and user_name (snake_case)"
+    ],
+    "suggestions": [
+      "Use consistent snake_case: user_id, user_name"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-011",
+    "language": "python",
+    "description": "Commented-out code",
+    "bug_type": "commented_code",
+    "code": "# old_algorithm(data)\n# if result > 100:\n#     scale(result)\ndef process(data):\n    return new_algorithm(data)",
+    "expected_issues": [
+      "Commented-out code should be removed; version control tracks history"
+    ],
+    "suggestions": [
+      "Remove commented code, rely on git history"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-012",
+    "language": "python",
+    "description": "Hardcoded configuration",
+    "bug_type": "hardcoded_config",
+    "code": "DB_HOST = 'prod-db.internal'\nDB_PORT = 5432\nDB_USER = 'app_user'\nDB_PASSWORD = 'hunter2'\n\ndef connect():\n    return pg.connect(host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASSWORD)",
+    "expected_issues": [
+      "Configuration hardcoded including credentials"
+    ],
+    "suggestions": [
+      "Move to environment variables or config file; never hardcode credentials"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-013",
+    "language": "python",
+    "description": "Overly complex ternary",
+    "bug_type": "complex_ternary",
+    "code": "result = 'high' if x > 100 else 'medium' if x > 50 else 'low' if x > 10 else 'minimal'",
+    "expected_issues": [
+      "Nested ternary is hard to read and understand"
+    ],
+    "suggestions": [
+      "Use if/elif/else or lookup dict for clarity"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-014",
+    "language": "python",
+    "description": "God object",
+    "bug_type": "god_object",
+    "code": "class Manager:\n    def handle_users(self): ...\n    def handle_orders(self): ...\n    def handle_payments(self): ...\n    def handle_reports(self): ...\n    def handle_notifications(self): ...\n    def handle_cache(self): ...",
+    "expected_issues": [
+      "Single class managing multiple unrelated concerns (users, orders, payments, reports)"
+    ],
+    "suggestions": [
+      "Split into UserManager, OrderManager, PaymentProcessor, ReportGenerator"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-015",
+    "language": "python",
+    "description": "Print instead of logging",
+    "bug_type": "print_logging",
+    "code": "def process(data):\n    print(f'Processing {data}')\n    result = transform(data)\n    print(f'Result: {result}')\n    return result",
+    "expected_issues": [
+      "print() used instead of proper logging"
+    ],
+    "suggestions": [
+      "Replace print with logger.info/debug with structured logging"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-016",
+    "language": "python",
+    "description": "Missing error context",
+    "bug_type": "missing_context",
+    "code": "try:\n    result = compute(value)\nexcept ValueError:\n    raise ValueError('Invalid value')",
+    "expected_issues": [
+      "Exception message loses context about what value failed"
+    ],
+    "suggestions": [
+      "Use 'raise ValueError(f'Invalid value: {value}') from e'"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-017",
+    "language": "python",
+    "description": "Boolean trap",
+    "bug_type": "boolean_trap",
+    "code": "def create_user(name, email, active=True, admin=False, verified=True, premium=False):\n    ...",
+    "expected_issues": [
+      "Multiple boolean parameters make call sites unclear"
+    ],
+    "suggestions": [
+      "Use keyword-only args, enums, or options class"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-018",
+    "language": "python",
+    "description": "Deeply chained calls",
+    "bug_type": "chain_calls",
+    "code": "total = order.items.filter(lambda i: i.active).map(lambda i: i.price).reduce(lambda a, b: a + b, 0)",
+    "expected_issues": [
+      "Long method chain hard to debug and step through"
+    ],
+    "suggestions": [
+      "Break into named intermediate variables"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-019",
+    "language": "python",
+    "description": "TODO/FIXME debt",
+    "bug_type": "todo_debt",
+    "code": "# TODO: handle None case\ndef compute(data):\n    # FIXME: this is wrong for edge cases\n    return data.value * 2\n    # HACK: temporary fix, refactor later\n    # XXX: race condition possible",
+    "expected_issues": [
+      "Unresolved TODO, FIXME, HACK, and XXX comments"
+    ],
+    "suggestions": [
+      "Resolve or create tracked issues for each TODO/FIXME"
+    ],
+    "expected_verdict": "FAIL"
+  },
+  {
+    "id": "st-020",
+    "language": "python",
+    "description": "Returning None vs raising",
+    "bug_type": "silent_failure",
+    "code": "def find_user(id):\n    for user in users:\n        if user.id == id:\n            return user\n    return None",
+    "expected_issues": [
+      "Returns None silently; caller may not check"
+    ],
+    "suggestions": [
+      "Raise NotFoundError or use Optional[User] with explicit check"
+    ],
+    "expected_verdict": "FAIL"
+  }
+]

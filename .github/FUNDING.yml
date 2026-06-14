@@ -1,0 +1,7 @@
+# Funding configuration for FableForge
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsors-button-in-your-repository
+
+github: [fableforge]
+open_collective: fableforge
+patreon: fableforge
+custom: ['https://fableforge.ai/sponsor']

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-swarm"
+version = "0.1.0"
+description = "Orchestrate micro-agent swarms using Markov transition matrices as handoff patterns"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "pydantic>=2.0",
+    "numpy>=1.24",
+    "click>=8.0",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+    "litellm>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+]
+
+[project.scripts]
+swarm = "agent_swarm.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_swarm"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

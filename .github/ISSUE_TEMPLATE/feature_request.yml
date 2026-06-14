@@ -1,0 +1,118 @@
+name: Feature Request
+description: Suggest a feature or enhancement for a FableForge project
+title: "[FEATURE] "
+labels: ["enhancement", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## FableForge Feature Request
+
+        Have an idea for making FableForge better? We'd love to hear it!
+
+        **Before opening a feature request**, please:
+        - Search [existing issues](../../issues) to see if this has been requested before
+        - Check the [roadmap](../../projects) to see if it's already planned
+        - Consider whether this is a **bug** (something broken) or a **feature** (something new). If it's a bug, use the Bug Report template instead.
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem Description
+      description: |
+        What problem are you trying to solve? What's the pain point or limitation you're facing?
+        A clear problem statement helps us understand the "why" behind your request, which is more
+        valuable than a specific implementation suggestion.
+      placeholder: |
+        When I use Anvil to generate multi-file projects, I have to manually specify
+        every file I want. There's no way to say "generate a standard Flask app layout"
+        and let Anvil infer the appropriate file structure from a single prompt. This means
+        I spend significant time crafting detailed prompts that describe file-by-file
+        structure instead of focusing on what the app should actually *do*.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: |
+        How would you like this problem to be solved? Describe your ideal outcome.
+        Don't worry about implementation details — just focus on the user-facing behavior
+        you'd like to see.
+      placeholder: |
+        Add a `--template` or `-t` flag to `anvil run` that lets users specify a project
+        archetype like `flask-api`, `fastapi-full`, `cli-tool`, or `data-pipeline`.
+        Anvil would then use that template as a structural scaffold and fill in the
+        implementation details based on the user's prompt.
+
+        Example:
+        ```
+        anvil run "Create a user management API" --template fastapi-full
+        ```
+        This would generate a FastAPI project with the standard directory layout
+        (routers/, models/, schemas/, tests/) without needing tospell out every
+        file in the prompt.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives-considered
+    attributes:
+      label: Alternatives Considered
+      description: |
+        What other approaches have you tried or considered? Understanding what didn't
+        work helps us evaluate the best solution.
+      placeholder: |
+        - I tried writing a custom Anvil plugin that pre-populates a directory structure,
+          but this doesn't compose well with the verification loop.
+        - I considered using prompt templates externally, but that requires managing
+          a separate template library outside of Anvil.
+        - Currently I just write very long prompts, which works but is tedious and brittle.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: Which FableForge project is this feature request for?
+      options:
+        - Anvil (core generation engine)
+        - VerifyLoop (verification & repair loop)
+        - ErrorRecovery (error recovery module)
+        - ShellWhisperer (shell benchmark model)
+        - ReasonCritic (critique & refinement model)
+        - FableForge-14B (base language model)
+        - AgentSwarm (multi-agent orchestration)
+        - BenchAgent (benchmarking framework)
+        - CodeDistiller (training data distillation)
+        - TraceCompiler (trace optimization compiler)
+        - DatasetPipeline (dataset creation & curation)
+        - RLHFLoop (RLHF training pipeline)
+        - DPOTrainer (DPO preference training)
+        - SkillDistiller (skill extraction & distillation)
+        - PromptForge (prompt engineering toolkit)
+        - ModelMerger (model merging toolkit)
+        - EvalSuite (evaluation framework)
+        - AnvilCLI (command-line interface)
+        - AnvilAPI (HTTP API server)
+        - AnvilSDK (Python SDK)
+        - Other (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: |
+        Any other context — mockups, links to discussions, related issues in other projects,
+        implementation ideas, or performance requirements.
+      placeholder: |
+        - This relates to the template system discussed in #87
+        - Similar to how Cookiecutter works, but integrated into the Anvil pipeline
+        - Would benefit from VerifyLoop validation after scaffold generation
+    validations:
+      required: false

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trajectory-distiller"
+version = "0.1.0"
+description = "Distill agent traces into training datasets across multiple formats"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "click>=8.0",
+    "pydantic>=2.0",
+    "datasets>=2.14",
+    "rich>=13.0",
+]
+
+[project.scripts]
+distill = "trajectory_distiller.cli:cli"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov", "ruff"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

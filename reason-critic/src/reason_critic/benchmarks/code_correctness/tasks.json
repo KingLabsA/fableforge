@@ -1,0 +1,656 @@
+[
+  {
+    "id": "cc-001",
+    "language": "python",
+    "bug_type": "off_by_one",
+    "description": "Base case uses <= 0 instead of <= 1, breaks for n=0 vs n=1",
+    "correct_code": "def factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n - 1)",
+    "buggy_code": "def factorial(n):\n    if n <= 0:\n        return 1\n    return n * factorial(n - 1)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "off",
+      "by",
+      "one"
+    ]
+  },
+  {
+    "id": "cc-002",
+    "language": "python",
+    "bug_type": "off_by_one",
+    "description": "Loop iterates one past the end of the list",
+    "correct_code": "for i in range(len(items)):\n    process(items[i])",
+    "buggy_code": "for i in range(len(items) + 1):\n    process(items[i])",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "off",
+      "by",
+      "one"
+    ]
+  },
+  {
+    "id": "cc-003",
+    "language": "python",
+    "bug_type": "off_by_one",
+    "description": "Slice excludes the last intended element",
+    "correct_code": "result = items[:5]",
+    "buggy_code": "result = items[:4]",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "off",
+      "by",
+      "one"
+    ]
+  },
+  {
+    "id": "cc-004",
+    "language": "python",
+    "bug_type": "off_by_one",
+    "description": "Range excludes n when it should include it",
+    "correct_code": "for i in range(1, n + 1):\n    total += i",
+    "buggy_code": "for i in range(1, n):\n    total += i",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "off",
+      "by",
+      "one"
+    ]
+  },
+  {
+    "id": "cc-005",
+    "language": "python",
+    "bug_type": "off_by_one",
+    "description": "Boundary check uses > instead of >=, missing index 0",
+    "correct_code": "if idx >= 0 and idx < len(arr):",
+    "buggy_code": "if idx > 0 and idx < len(arr):",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "off",
+      "by",
+      "one"
+    ]
+  },
+  {
+    "id": "cc-006",
+    "language": "python",
+    "bug_type": "wrong_operator",
+    "description": "Assignment = instead of comparison ==",
+    "correct_code": "if x == y:",
+    "buggy_code": "if x = y:",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "operator"
+    ]
+  },
+  {
+    "id": "cc-007",
+    "language": "python",
+    "bug_type": "wrong_operator",
+    "description": "Equality check where inequality is needed",
+    "correct_code": "if a != b:",
+    "buggy_code": "if a == b:",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "operator"
+    ]
+  },
+  {
+    "id": "cc-008",
+    "language": "python",
+    "bug_type": "wrong_operator",
+    "description": "<= causes index out of bounds",
+    "correct_code": "while i < len(data):",
+    "buggy_code": "while i <= len(data):",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "operator"
+    ]
+  },
+  {
+    "id": "cc-009",
+    "language": "python",
+    "bug_type": "wrong_operator",
+    "description": "Strict > excludes exactly 18",
+    "correct_code": "if age >= 18:",
+    "buggy_code": "if age > 18:",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "operator"
+    ]
+  },
+  {
+    "id": "cc-010",
+    "language": "python",
+    "bug_type": "wrong_operator",
+    "description": "Logical OR instead of AND",
+    "correct_code": "result = a and b",
+    "buggy_code": "result = a or b",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "operator"
+    ]
+  },
+  {
+    "id": "cc-011",
+    "language": "python",
+    "bug_type": "missing_none_check",
+    "description": "No None check before attribute access",
+    "correct_code": "def get_name(user):\n    if user is None:\n        return 'Unknown'\n    return user.name",
+    "buggy_code": "def get_name(user):\n    return user.name",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "none",
+      "check"
+    ]
+  },
+  {
+    "id": "cc-012",
+    "language": "python",
+    "bug_type": "missing_check",
+    "description": "No empty list check before indexing",
+    "correct_code": "if items:\n    return items[0]\nreturn None",
+    "buggy_code": "return items[0]",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "check"
+    ]
+  },
+  {
+    "id": "cc-013",
+    "language": "python",
+    "bug_type": "missing_type_check",
+    "description": "No type check before numeric operation",
+    "correct_code": "if isinstance(value, int):\n    total += value",
+    "buggy_code": "total += value",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "type",
+      "check"
+    ]
+  },
+  {
+    "id": "cc-014",
+    "language": "python",
+    "bug_type": "missing_key_check",
+    "description": "No key existence check before dict access",
+    "correct_code": "if key in config:\n    return config[key]\nreturn default",
+    "buggy_code": "return config[key]",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "key",
+      "check"
+    ]
+  },
+  {
+    "id": "cc-015",
+    "language": "python",
+    "bug_type": "missing_error_handling",
+    "description": "No HTTP status check before parsing",
+    "correct_code": "if response.status_code == 200:\n    data = response.json()\nelse:\n    raise Exception(f'HTTP {response.status_code}')",
+    "buggy_code": "data = response.json()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "error",
+      "handling"
+    ]
+  },
+  {
+    "id": "cc-016",
+    "language": "python",
+    "bug_type": "wrong_variable",
+    "description": "Uses singular variable instead of plural collection",
+    "correct_code": "total = sum(values)",
+    "buggy_code": "total = sum(value)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "variable"
+    ]
+  },
+  {
+    "id": "cc-017",
+    "language": "python",
+    "bug_type": "wrong_variable",
+    "description": "Processes entire collection instead of each item",
+    "correct_code": "for item in items:\n    process(item)",
+    "buggy_code": "for item in items:\n    process(items)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "variable"
+    ]
+  },
+  {
+    "id": "cc-018",
+    "language": "python",
+    "bug_type": "wrong_attribute",
+    "description": "Public attribute instead of private backing field",
+    "correct_code": "return self._value",
+    "buggy_code": "return self.value",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "attribute"
+    ]
+  },
+  {
+    "id": "cc-019",
+    "language": "python",
+    "bug_type": "wrong_variable",
+    "description": "Duplicate variable instead of different operand",
+    "correct_code": "result = first + second",
+    "buggy_code": "result = first + first",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "wrong",
+      "variable"
+    ]
+  },
+  {
+    "id": "cc-020",
+    "language": "python",
+    "bug_type": "typo",
+    "description": "Typo in method name: tranform vs transform",
+    "correct_code": "output = input_data.transform()",
+    "buggy_code": "output = input.tranform()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "typo"
+    ]
+  },
+  {
+    "id": "cc-021",
+    "language": "python",
+    "bug_type": "control_flow",
+    "description": "Else clause logic always executes due to indentation",
+    "correct_code": "if condition:\n    handle_true()\nelse:\n    handle_false()",
+    "buggy_code": "if condition:\n    handle_true()\nhandle_false()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "control",
+      "flow"
+    ]
+  },
+  {
+    "id": "cc-022",
+    "language": "python",
+    "bug_type": "control_flow",
+    "description": "Loop body not indented, only last item processed",
+    "correct_code": "for item in items:\n    if item.valid:\n        process(item)",
+    "buggy_code": "for item in items:\nprocess(item)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "control",
+      "flow"
+    ]
+  },
+  {
+    "id": "cc-023",
+    "language": "python",
+    "bug_type": "control_flow",
+    "description": "elif replaced with if; zero case reached when x > 0 is False",
+    "correct_code": "if x > 0:\n    return 'positive'\nelif x < 0:\n    return 'negative'\nelse:\n    return 'zero'",
+    "buggy_code": "if x > 0:\n    return 'positive'\nif x < 0:\n    return 'negative'\nreturn 'zero'",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "control",
+      "flow"
+    ]
+  },
+  {
+    "id": "cc-024",
+    "language": "python",
+    "bug_type": "missing_update",
+    "description": "Infinite loop: loop variable never updated",
+    "correct_code": "while not done:\n    step()\n    done = check()",
+    "buggy_code": "while not done:\n    step()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "update"
+    ]
+  },
+  {
+    "id": "cc-025",
+    "language": "python",
+    "bug_type": "missing_error_handling",
+    "description": "No try/except around potentially failing operation",
+    "correct_code": "try:\n    result = risky()\nexcept Exception:\n    result = fallback()",
+    "buggy_code": "result = risky()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "error",
+      "handling"
+    ]
+  },
+  {
+    "id": "cc-026",
+    "language": "python",
+    "bug_type": "mutation",
+    "description": "Modifies original list instead of a copy",
+    "correct_code": "new_list = old_list.copy()\nnew_list.append(item)",
+    "buggy_code": "old_list.append(item)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutation"
+    ]
+  },
+  {
+    "id": "cc-027",
+    "language": "python",
+    "bug_type": "mutation",
+    "description": "Mutates input argument instead of returning new list",
+    "correct_code": "def add_item(items, new):\n    return items + [new]",
+    "buggy_code": "def add_item(items, new):\n    items.append(new)\n    return items",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutation"
+    ]
+  },
+  {
+    "id": "cc-028",
+    "language": "python",
+    "bug_type": "mutation",
+    "description": "Shallow reference instead of copy",
+    "correct_code": "defaults = {'a': 1, 'b': 2}\ncopy = defaults.copy()",
+    "buggy_code": "defaults = {'a': 1, 'b': 2}\ncopy = defaults",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutation"
+    ]
+  },
+  {
+    "id": "cc-029",
+    "language": "python",
+    "bug_type": "mutation",
+    "description": "In-place sort instead of sorted(), mutates original",
+    "correct_code": "result = sorted(items, key=lambda x: x.age)",
+    "buggy_code": "items.sort(key=lambda x: x.age)\nresult = items",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutation"
+    ]
+  },
+  {
+    "id": "cc-030",
+    "language": "python",
+    "bug_type": "mutation",
+    "description": "Modifies original config dict",
+    "correct_code": "config = original.copy()\nconfig['key'] = 'new_value'",
+    "buggy_code": "original['key'] = 'new_value'\nconfig = original",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutation"
+    ]
+  },
+  {
+    "id": "cc-031",
+    "language": "python",
+    "bug_type": "missing_await",
+    "description": "Coroutine not awaited, result is coroutine object",
+    "correct_code": "result = await fetch_data()",
+    "buggy_code": "result = fetch_data()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "await"
+    ]
+  },
+  {
+    "id": "cc-032",
+    "language": "python",
+    "bug_type": "sequential_async",
+    "description": "Sequential awaits instead of concurrent gather",
+    "correct_code": "async def process(items):\n    tasks = [process_one(i) for i in items]\n    return await asyncio.gather(*tasks)",
+    "buggy_code": "async def process(items):\n    for i in items:\n        await process_one(i)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "sequential",
+      "async"
+    ]
+  },
+  {
+    "id": "cc-033",
+    "language": "python",
+    "bug_type": "race_condition",
+    "description": "No lock around shared mutable state",
+    "correct_code": "async with lock:\n    shared_data = compute()",
+    "buggy_code": "shared_data = compute()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "race",
+      "condition"
+    ]
+  },
+  {
+    "id": "cc-034",
+    "language": "python",
+    "bug_type": "missing_await",
+    "description": "Two missing awaits on async operations",
+    "correct_code": "response = await client.get(url)\ndata = await response.json()",
+    "buggy_code": "response = client.get(url)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "await"
+    ]
+  },
+  {
+    "id": "cc-035",
+    "language": "python",
+    "bug_type": "missing_error_handling",
+    "description": "No exception handling in async function",
+    "correct_code": "async def safe_read():\n    try:\n        return await read_file()\n    except FileNotFoundError:\n        return None",
+    "buggy_code": "async def safe_read():\n    return await read_file()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "error",
+      "handling"
+    ]
+  },
+  {
+    "id": "cc-036",
+    "language": "python",
+    "bug_type": "resource_leak",
+    "description": "File not closed, resource leak",
+    "correct_code": "with open(path) as f:\n    data = f.read()",
+    "buggy_code": "f = open(path)\ndata = f.read()",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "resource",
+      "leak"
+    ]
+  },
+  {
+    "id": "cc-037",
+    "language": "python",
+    "bug_type": "resource_leak",
+    "description": "Database cursor not properly closed",
+    "correct_code": "with db.cursor() as cur:\n    cur.execute(query)",
+    "buggy_code": "cur = db.cursor()\ncur.execute(query)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "resource",
+      "leak"
+    ]
+  },
+  {
+    "id": "cc-038",
+    "language": "python",
+    "bug_type": "resource_leak",
+    "description": "Connection not closed in finally block",
+    "correct_code": "conn = get_connection()\ntry:\n    return conn.query(sql)\nfinally:\n    conn.close()",
+    "buggy_code": "conn = get_connection()\nreturn conn.query(sql)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "resource",
+      "leak"
+    ]
+  },
+  {
+    "id": "cc-039",
+    "language": "python",
+    "bug_type": "resource_leak",
+    "description": "Executor not shut down",
+    "correct_code": "with ThreadPoolExecutor() as executor:\n    results = list(executor.map(fn, data))",
+    "buggy_code": "executor = ThreadPoolExecutor()\nresults = list(executor.map(fn, data))",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "resource",
+      "leak"
+    ]
+  },
+  {
+    "id": "cc-040",
+    "language": "python",
+    "bug_type": "resource_leak",
+    "description": "Temporary file not properly managed",
+    "correct_code": "import tempfile\nwith tempfile.NamedTemporaryFile(delete=True) as tmp:\n    tmp.write(data)",
+    "buggy_code": "tmp = tempfile.NamedTemporaryFile()\ntmp.write(data)",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "resource",
+      "leak"
+    ]
+  },
+  {
+    "id": "cc-041",
+    "language": "python",
+    "bug_type": "logic_error",
+    "description": "Binary search: wrong bounds and no increment causes infinite loop",
+    "correct_code": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1",
+    "buggy_code": "def binary_search(arr, target):\n    lo, hi = 0, len(arr)\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            lo = mid\n        else:\n            hi = mid\n    return -1",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "logic",
+      "error"
+    ]
+  },
+  {
+    "id": "cc-042",
+    "language": "python",
+    "bug_type": "mutation",
+    "description": "Mutates dict1 instead of creating new merged dict",
+    "correct_code": "def merge(dict1, dict2):\n    result = dict1.copy()\n    result.update(dict2)\n    return result",
+    "buggy_code": "def merge(dict1, dict2):\n    dict1.update(dict2)\n    return dict1",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutation"
+    ]
+  },
+  {
+    "id": "cc-043",
+    "language": "python",
+    "bug_type": "logic_error",
+    "description": "Clamp arguments swapped \u2014 always returns lo",
+    "correct_code": "def clamp(value, lo, hi):\n    return max(lo, min(value, hi))",
+    "buggy_code": "def clamp(value, lo, hi):\n    return min(lo, max(value, hi))",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "logic",
+      "error"
+    ]
+  },
+  {
+    "id": "cc-044",
+    "language": "python",
+    "bug_type": "missing_preprocessing",
+    "description": "No normalization: prevents case/space matching",
+    "correct_code": "def is_palindrome(s):\n    s = s.lower().replace(' ', '')\n    return s == s[::-1]",
+    "buggy_code": "def is_palindrome(s):\n    return s == s[::-1]",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "missing",
+      "preprocessing"
+    ]
+  },
+  {
+    "id": "cc-045",
+    "language": "python",
+    "bug_type": "logic_error",
+    "description": "set() removes duplicates but loses order guarantee",
+    "correct_code": "def dedupe(items):\n    seen = set()\n    result = []\n    for item in items:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result",
+    "buggy_code": "def dedupe(items):\n    return list(set(items))",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "logic",
+      "error"
+    ]
+  },
+  {
+    "id": "cc-046",
+    "language": "python",
+    "bug_type": "mutable_default",
+    "description": "Mutable default argument shared across calls",
+    "correct_code": "def append_to(element, dest=None):\n    if dest is None:\n        dest = []\n    dest.append(element)\n    return dest",
+    "buggy_code": "def append_to(element, dest=[]):\n    dest.append(element)\n    return dest",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutable",
+      "default"
+    ]
+  },
+  {
+    "id": "cc-047",
+    "language": "python",
+    "bug_type": "mutable_default",
+    "description": "Mutable dict default shared between calls",
+    "correct_code": "def register(name, hooks=None):\n    if hooks is None:\n        hooks = {}\n    hooks[name] = True\n    return hooks",
+    "buggy_code": "def register(name, hooks={}):\n    hooks[name] = True\n    return hooks",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutable",
+      "default"
+    ]
+  },
+  {
+    "id": "cc-048",
+    "language": "python",
+    "bug_type": "mutable_default",
+    "description": "Class-level mutable dict shared across instances",
+    "correct_code": "class Counter:\n    def __init__(self):\n        self.counts = {}\n    def add(self, key):\n        self.counts[key] = self.counts.get(key, 0) + 1",
+    "buggy_code": "class Counter:\n    counts = {}\n    def add(self, key):\n        self.counts[key] = self.counts.get(key, 0) + 1",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "mutable",
+      "default"
+    ]
+  },
+  {
+    "id": "cc-049",
+    "language": "python",
+    "bug_type": "reference_sharing",
+    "description": "[[0]*cols]*rows creates shared inner lists",
+    "correct_code": "def build_matrix(rows, cols, fill=0):\n    return [[fill for _ in range(cols)] for _ in range(rows)]",
+    "buggy_code": "def build_matrix(rows, cols, fill=0):\n    return [[fill] * cols] * rows",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "reference",
+      "sharing"
+    ]
+  },
+  {
+    "id": "cc-050",
+    "language": "python",
+    "bug_type": "reference_sharing",
+    "description": "List multiplication creates shared references, modifying one modifies all",
+    "correct_code": "results = [[0]*3 for _ in range(3)]\nresults[0][0] = 1",
+    "buggy_code": "results = [[0]*3]*3\nresults[0][0] = 1",
+    "expected_verdict": "FAIL",
+    "expected_issue_keywords": [
+      "reference",
+      "sharing"
+    ]
+  }
+]

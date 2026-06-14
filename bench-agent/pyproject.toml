@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bench-agent"
+version = "0.1.0"
+description = "HumanEval for tool use — a standardized benchmark for evaluating LLM tool-use capabilities"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "FableForge"}]
+dependencies = [
+    "pydantic>=2.0",
+    "rich>=13.0",
+    "jinja2>=3.1",
+    "docker>=6.0",
+    "click>=8.0",
+]
+
+[project.scripts]
+bench-agent = "bench_agent.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bench_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

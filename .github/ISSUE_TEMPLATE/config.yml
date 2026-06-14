@@ -1,0 +1,31 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "💬 Discord Community"
+    url: "https://discord.gg/fableforge"
+    about: |
+      Get help from the community and maintainers in real time.
+      Join the FableForge Discord for quick questions, discussions,
+      and collaborative problem-solving. This is the best place for
+      "how do I..." questions that don't need a tracked issue.
+  - name: "📖 Documentation"
+    url: "https://fableforge.readthedocs.io"
+    about: |
+      Read the official FableForge documentation before opening an issue.
+      Covers installation, configuration, training guides, API reference,
+      and ecosystem integration. Most common questions are answered here.
+  - name: "💬 GitHub Discussions"
+    url: "https://github.com/fableforge/fableforge/discussions"
+    about: |
+      Start or join a discussion for ideas, Q&A, show & tell, and
+      announcements. Use Discussions for open-ended questions that don't
+      fit the bug/feature template, or to share what you've built with
+      FableForge.
+  - name: "🔒 Security Vulnerability"
+    url: "https://github.com/fableforge/fableforge/security/advisories/new"
+    about: |
+      Report security vulnerabilities privately through GitHub Security
+      Advisories. Do NOT open a public issue for security vulnerabilities.
+      See our security policy at .github/SECURITY.md for details.
+  - name: "🌐 Website"
+    url: "https://fableforge.ai"
+    about: Visit the FableForge website for an overview, demos, and latest news.

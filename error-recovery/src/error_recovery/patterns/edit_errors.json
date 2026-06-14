@@ -1,0 +1,167 @@
+[
+  {
+    "error_type": "edit_error",
+    "error_message": "oldstring not found",
+    "pattern": "oldstring not found|pattern not found|no match found",
+    "recovery_prompt": "The text pattern to replace was not found in the file. Try: (1) read the file first to verify exact content, (2) check for whitespace differences (trailing spaces, tabs vs spaces), (3) use a smaller, unique substring, (4) account for line ending differences.",
+    "success_rate": 0.85,
+    "tags": [
+      "edit",
+      "pattern"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "multiple matches found",
+    "pattern": "multiple matches|ambiguous match|found more than one",
+    "recovery_prompt": "The pattern matched multiple locations in the file. Try: (1) add more surrounding context to make the match unique, (2) include line numbers if supported, (3) use replaceAll if you intend to change all instances, (4) be more specific with your match string.",
+    "success_rate": 0.82,
+    "tags": [
+      "edit",
+      "pattern"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "file not found for edit",
+    "pattern": "file not found|no such file",
+    "recovery_prompt": "The file to edit doesn't exist. Try: (1) verify the file path, (2) create the file first if it's new, (3) check the working directory, (4) list the directory to see available files.",
+    "success_rate": 0.88,
+    "tags": [
+      "edit",
+      "filesystem"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "permission denied editing file",
+    "pattern": "permission denied.*edit|cannot write|read-only",
+    "recovery_prompt": "Cannot write to the file. Try: (1) check file permissions with 'ls -la', (2) change ownership or permissions, (3) edit a copy instead, (4) use sudo if appropriate (but prefer fixing permissions).",
+    "success_rate": 0.72,
+    "tags": [
+      "edit",
+      "permissions"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "syntax error after edit",
+    "pattern": "syntax error|parse error|unexpected.*after edit",
+    "recovery_prompt": "The edit introduced a syntax error. Try: (1) check for missing brackets, quotes, or semicolons, (2) validate the file syntax with a linter, (3) revert the change and try again with more care, (4) check indentation.",
+    "success_rate": 0.78,
+    "tags": [
+      "edit",
+      "syntax"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "line range out of bounds",
+    "pattern": "range.*invalid|range.*out of|line \\\\1+.*not found|line number out of range",
+    "recovery_prompt": "The specified line range doesn't exist in the file. Try: (1) check the file length first, (2) use relative line references, (3) don't hardcode line numbers—use pattern matching instead, (4) account for recent edits that may have shifted line numbers.",
+    "success_rate": 0.8,
+    "tags": [
+      "edit",
+      "range"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "edit left file unchanged",
+    "pattern": "no changes made|file unchanged|edit had no effect",
+    "recovery_prompt": "The edit was applied but resulted in no changes. Try: (1) verify the match string matches the actual content, (2) check for invisible characters or encoding issues, (3) ensure the replacement is actually different from the matched text.",
+    "success_rate": 0.75,
+    "tags": [
+      "edit",
+      "nochange"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "cannot edit binary file",
+    "pattern": "binary file|cannot edit binary",
+    "recovery_prompt": "Binary files cannot be edited as text. Try: (1) use a hex editor if needed, (2) regenerate the file from source, (3) use a tool designed for the specific format, (4) check if you meant to edit a different file.",
+    "success_rate": 0.6,
+    "tags": [
+      "edit",
+      "binary"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "encoding error",
+    "pattern": "encoding|codec|decode error|unicode",
+    "recovery_prompt": "File encoding issue. Try: (1) detect encoding with 'file -i <path>', (2) open with correct encoding parameter, (3) convert with 'iconv', (4) handle BOM markers, (5) specify encoding explicitly (e.g., utf-8).",
+    "success_rate": 0.7,
+    "tags": [
+      "edit",
+      "encoding"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "concurrent edit conflict",
+    "pattern": "concurrent edit|conflict|file changed externally|stale",
+    "recovery_prompt": "The file was modified externally while editing. Try: (1) re-read the file to get current content, (2) merge changes manually, (3) use version control to manage conflicts, (4) implement file locking.",
+    "success_rate": 0.55,
+    "tags": [
+      "edit",
+      "conflict"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "indent mismatch after edit",
+    "pattern": "indent|indentation|whitespace|mismatch.*indent",
+    "recovery_prompt": "Indentation/whitespace mismatch. Try: (1) use consistent indentation (tabs or spaces, not mixed), (2) check for trailing whitespace, (3) use an editor that shows whitespace, (4) run a formatter (prettier, black, etc.).",
+    "success_rate": 0.82,
+    "tags": [
+      "edit",
+      "whitespace"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "edit broke JSON",
+    "pattern": "json.*invalid|json.*parse|json decode error|unexpected.*json",
+    "recovery_prompt": "The edit resulted in invalid JSON. Try: (1) validate with 'python -m json.tool <file>', (2) check for trailing commas (not allowed in JSON), (3) ensure all strings are properly quoted, (4) check for missing closing brackets.",
+    "success_rate": 0.78,
+    "tags": [
+      "edit",
+      "json"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "edit broke YAML",
+    "pattern": "yaml.*invalid|yaml.*parse|yaml.*error",
+    "recovery_prompt": "The edit resulted in invalid YAML. Try: (1) validate with 'python -c \"import yaml; yaml.safe_load(open(file))\"', (2) check indentation (YAML is indent-sensitive), (3) check for tab characters (YAML requires spaces), (4) quote strings with special characters.",
+    "success_rate": 0.76,
+    "tags": [
+      "edit",
+      "yaml"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "partial edit applied",
+    "pattern": "partial|incomplete|partially applied|only.*of.*replacements",
+    "recovery_prompt": "Only some of the intended edits were applied. Try: (1) verify which changes were made, (2) re-read the file, (3) apply remaining changes individually, (4) use more specific match patterns to avoid partial matches.",
+    "success_rate": 0.65,
+    "tags": [
+      "edit",
+      "partial"
+    ]
+  },
+  {
+    "error_type": "edit_error",
+    "error_message": "cannot create parent directory",
+    "pattern": "cannot create.*directory|no such file or directory.*creating",
+    "recovery_prompt": "Parent directory for the new file doesn't exist. Try: (1) create the parent directory first: 'mkdir -p <path>', (2) verify the path is correct, (3) check permissions on the parent directory.",
+    "success_rate": 0.9,
+    "tags": [
+      "edit",
+      "filesystem"
+    ]
+  }
+]

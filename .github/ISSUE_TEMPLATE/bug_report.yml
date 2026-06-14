@@ -1,0 +1,164 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in a FableForge project
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## FableForge Bug Report
+
+        Thank you for taking the time to report a bug! Please fill out this form completely so we can reproduce and fix the issue efficiently.
+
+        **Before opening an issue**, please:
+        - Search [existing issues](../../issues) to avoid duplicates
+        - Verify you're running the latest version of the affected project
+        - Check the [documentation](https://fableforge.readthedocs.io) and [Discord](https://discord.gg/fableforge) for known workarounds
+
+  - type: input
+    id: anvil-version
+    attributes:
+      label: Anvil / Package Version
+      description: The version of Anvil or the specific FableForge package you're using
+      placeholder: "e.g., anvil==0.8.2, verifyloop==0.3.1"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: The Python version you're running
+      placeholder: "e.g., 3.11.5"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: The OS where you encountered the bug
+      options:
+        - macOS (Intel)
+        - macOS (Apple Silicon)
+        - Ubuntu / Debian
+        - Fedora / RHEL
+        - Windows 10
+        - Windows 11
+        - Other Linux
+        - Other (specify in Additional Context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: model-backend
+    attributes:
+      label: Model Backend
+      description: Which model backend were you using when the bug occurred?
+      options:
+        - OpenAI (GPT-4 / GPT-4o)
+        - OpenAI (GPT-3.5-turbo)
+        - Anthropic (Claude 3.5 Sonnet)
+        - Anthropic (Claude 3 Opus)
+        - Anthropic (Claude 3 Haiku)
+        - Local (Ollama)
+        - Local (llama.cpp)
+        - Local (vLLM)
+        - Google (Gemini Pro)
+        - Mistral (via API)
+        - FableForge-14B (local)
+        - ShellWhisperer (local)
+        - Other (specify in Additional Context)
+        - N/A (not using a model)
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Detailed steps to reproduce the bug. The more complete and precise, the faster we can fix it.
+        Include the exact commands you ran, any input files, and the full command-line invocation.
+      placeholder: |
+        1. Install anvil: `pip install anvil-ai==0.8.2`
+        2. Create config: `anvil init --model gpt-4`
+        3. Run: `anvil run "Create a REST API with FastAPI"`
+        4. Observe error at Step 3
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: |
+        Anvil should generate a working FastAPI project with correct file structure,
+        including `main.py`, `requirements.txt`, and `Dockerfile`.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened? Include any error messages, unexpected output, or incorrect behavior.
+      placeholder: |
+        Anvil generates the `main.py` file but the import path `from app.routes import router`
+        fails because `app/routes.py` was never created. The error is:
+
+        ```
+        ModuleNotFoundError: No module named 'app.routes'
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification-output
+    attributes:
+      label: Verification Output
+      description: |
+        Paste the output of `anvil verify` or relevant verification commands.
+        This helps us see what Anvil's self-check reports about the generated artifact.
+      placeholder: |
+        $ anvil verify ./output/
+        [VERIFY] Checking file structure... PASS
+        [VERIFY] Checking imports... FAIL
+        [VERIFY]   - Unresolved import: app.routes
+        [VERIFY] Checking syntax... PASS
+        [VERIFY] 1 of 3 checks failed
+    validations:
+      required: false
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration
+      description: |
+        Paste your `anvil.yaml`, `verifyloop.yaml`, or other relevant config files.
+        **Remove any API keys or sensitive tokens before pasting!**
+      placeholder: |
+        model: gpt-4
+        temperature: 0.7
+        max_tokens: 4096
+        output_dir: ./output
+        verify: true
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: |
+        Any other context that might help us debug — related issues, links to discussions,
+        screenshots, environment details not covered above, or notes about when the bug started.
+      placeholder: |
+        - This started happening after upgrading from 0.7.1 to 0.8.2
+        - Related to #142 but different root cause
+        - Works fine on smaller prompts, only fails on prompts > 2000 tokens
+    validations:
+      required: false

@@ -1,0 +1,163 @@
+= FableForge Security Advisory Template
+:toc: macro
+:toclevels: 3
+
+This template is used to publish security advisories for the FableForge
+ecosystem. Replace all placeholder values (marked with `[ brackets ]`) before
+publishing.
+
+== Header
+
+[advisory]
+====
+*ID:* FSA-[YEAR]-[NUMBER] (e.g., FSA-2025-001)
+*Title:* [Brief vulnerability description]
+*Severity:* [Critical | High | Medium | Low]
+*CVSS Score:* [0.0–10.0]
+*Affected Versions:* [Version range(s)]
+*Fixed Versions:* [Version(s) with the fix]
+*CWE:* [CWE-XXXX] (https://cwe.mitre.org/data/definitions/[XXXX].html)
+*Component:* [Project name, e.g., "anvil", "verifyloop", "agent-swarm"]
+*Reporter:* [Reporter name / "Anonymous"]
+*Reported:* [YYYY-MM-DD]
+*Published:* [YYYY-MM-DD] or "Embargoed until [YYYY-MM-DD]"
+====
+
+== Summary
+
+[1–2 sentences describing the vulnerability in plain language.
+Focus on impact, not technical details.]
+
+.Example:
+A remote code execution vulnerability exists in the Anvil verification
+pipeline that allows an attacker to bypass the permission system and execute
+arbitrary shell commands.
+
+== Description
+
+[Detailed technical description of the vulnerability.
+Include: what goes wrong, why it goes wrong, and what an attacker can achieve.]
+
+.Example:
+The Anvil engine's `VerifyPipeline` processes file paths without
+sufficient sanitization. When a crafted task description includes a
+path traversal sequence (e.g., `../../../etc/passwd`), the engine
+resolves it outside the project sandbox, allowing read access to
+arbitrary files on the host system.
+
+This vulnerability can be exploited by any user who can submit a task
+to the Anvil engine, including through the CLI, API, or TUI interface.
+
+== Impact
+
+[Describe the real-world impact. Who is affected? What can happen?]
+
+.Example:
+* ** Confidentiality:** Attackers can read any file accessible to the Anvil
+  process, potentially including configuration files with API keys,
+  environment variables with secrets, and source code from other projects.
+* **Integrity:** No direct integrity impact; attackers cannot modify files
+  outside the sandbox.
+* **Availability:** No availability impact.
+
+== Affected Versions
+
+[Specify exactly which versions are affected.]
+
+.Example:
+* Anvil v0.1.0 through v0.1.4 — **Affected**
+* Anvil v0.2.0+ — **Not affected** (sandbox enforcement added in v0.2.0)
+* VerifyLoop all versions — **Not affected** (doesn't process file paths)
+* Other FableForge projects — **Not affected**
+
+== Mitigation
+
+[What users should do immediately, before upgrading.]
+
+.Example:
+Until you can upgrade, mitigate this vulnerability by:
+
+1. **Restrict file access:** Run Anvil inside a container or VM with limited
+   file system access:
++
+[source,bash]
+....
+docker run --read-only --tmpfs /tmp -v $(pwd):/workspace:ro anvil:latest
+....
+
+2. **Disable network access:** Prevent exfiltration of read files:
++
+[source,bash]
+....
+anvil run --offline "your task here"
+....
+
+3. **Audit logs:** Check Anvil session logs for unusual file read patterns:
++
+[source,bash]
+....
+anvil log --filter "path traversed outside sandbox"
+....
+
+== Solution
+
+[Describe the fix. Include the commit hash or PR link.]
+
+.Example:
+Upgrade to Anvil v0.2.0 or later, which includes the fix in commit
+`abc123def456` (https://github.com/fableforge/fableforge/pull/123).
+
+The fix adds path canonicalization and boundary checking to the
+`VerifyPipeline.resolve_path()` method, ensuring all file operations
+stay within the project sandbox.
+
+Upgrade instructions:
++
+[source,bash]
+....
+pip install --upgrade anvil-agent>=0.2.0
+....
+
+== Credit
+
+[Thank the reporter, if they consent to being named.]
+
+.Example:
+This vulnerability was reported by [Reporter Name] through our responsible
+disclosure program. We thank them for their thorough report and
+responsible disclosure of this issue.
+
+== References
+
+* [Link to the GitHub Security Advisory]
+* [Link to the fixing PR]
+* [Link to relevant CWE]
+* [Link to any related issues or discussions]
+
+== Timeline
+
+[Detailed timeline of the vulnerability handling.]
+
+.Example:
+|===
+| Date       | Event
+| 2025-01-15 | Vulnerability reported to security@fableforge.ai
+| 2025-01-15 | Acknowledgment sent to reporter (within 4 hours)
+| 2025-01-16 | Initial assessment completed: High severity
+| 2025-01-18 | Fix developed and tested internally
+| 2025-01-20 | Fix backported to v0.1.x release branch
+| 2025-01-22 | v0.1.5 and v0.2.0 released with the fix
+| 2025-01-22 | Security advisory published
+| 2025-04-22 | Full public disclosure (90-day window)
+|===
+
+== PGP Signed Advisory
+
+[If the advisory is PGP-signed, include the sig here. Otherwise, remove this section.]
+
+The canonical version of this advisory is signed with the FableForge security
+key (fingerprint: `A4B2 8C9D E1F0 3A7B 5C6D  8E9F 0A1B 2C3D 4E5F 6A7B`).
+
+-----BEGIN PGP SIGNATURE-----
+[Signature will be added at publication time]
+-----END PGP SIGNATURE-----

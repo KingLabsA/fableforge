@@ -1,0 +1,18 @@
+name: bash
+version: "1.0.0"
+description: "Execute shell commands — install deps, run scripts, manage processes"
+category: "core"
+tools:
+  - bash
+triggers:
+  - "run this command"
+  - "install"
+  - "execute"
+  - "start the server"
+  - "run tests"
+author: "agentskills"
+license: "MIT"
+tags:
+  - shell
+  - execution
+  - commands

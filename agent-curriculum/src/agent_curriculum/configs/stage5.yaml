@@ -1,0 +1,9 @@
+stage_id: 5
+name: master
+description: "Master tasks — long-horizon planning with complex recovery"
+difficulty_range: [0.8, 1.0]
+num_traces: 0
+learning_rate: 1.0e-05
+batch_size: 2
+num_epochs: 1
+lora_r: 16

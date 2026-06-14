@@ -1,0 +1,19 @@
+name: plan
+version: "1.0.0"
+description: "Plan multi-step tasks — decompose goals, identify dependencies, coordinate agent swarm"
+category: "core"
+tools:
+  - question
+  - glob
+  - read
+triggers:
+  - "plan this"
+  - "how should I approach"
+  - "break this down"
+  - "what's the strategy"
+author: "agentskills"
+license: "MIT"
+tags:
+  - planning
+  - coordination
+  - decomposition
